@@ -22,7 +22,7 @@ export const metadata: Metadata = generateSEOMetadata({
     "brand colors",
     "typography system",
   ],
-  ogImage: "/og-image-branding.png",
+  ogImage: "/og-image-branding.svg",
   canonicalUrl: "https://ziriverse.com/branding",
 });
 

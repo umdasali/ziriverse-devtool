@@ -13,8 +13,9 @@ const nextConfig = {
       bodySizeLimit: '10mb',
     },
   },
-  // Turbopack configuration (required for Next.js 16)
-  turbopack: {},
+  // Turbopack configuration (optional for Next.js 16)
+  // Disabled due to stability issues - use webpack for production builds
+  // turbopack: {},
   // Externalize native modules to prevent bundling issues
   serverExternalPackages: ['re2', 'sharp'],
 

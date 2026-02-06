@@ -22,7 +22,7 @@ export const metadata: Metadata = generateSEOMetadata({
     "twitter card validator",
     "free SEO tool",
   ],
-  ogImage: "/og-image-seo-validator.png",
+  ogImage: "/og-image-seo-validator.svg",
   canonicalUrl: "https://ziriverse.com/seo-validator",
 });
 

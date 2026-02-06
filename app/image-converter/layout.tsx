@@ -22,7 +22,7 @@ export const metadata: Metadata = generateSEOMetadata({
     "image filters",
     "free image tool",
   ],
-  ogImage: "/og-image-image-converter.png",
+  ogImage: "/og-image-image-converter.svg",
   canonicalUrl: "https://ziriverse.com/image-converter",
 });
 

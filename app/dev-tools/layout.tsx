@@ -22,7 +22,7 @@ export const metadata: Metadata = generateSEOMetadata({
     "code generator",
     "free dev tools",
   ],
-  ogImage: "/og-image-dev-tools.svg",
+  ogImage: "/og-image-dev-tools.png",
   canonicalUrl: "https://ziriverse.com/dev-tools",
 });
 

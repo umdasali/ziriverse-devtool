@@ -13,11 +13,24 @@ const nextConfig = {
       bodySizeLimit: '10mb',
     },
   },
-  // Turbopack configuration (optional for Next.js 16)
-  // Disabled due to stability issues - use webpack for production builds
-  // turbopack: {},
+  // Turbopack disabled for production builds (stability issues)
+  // Dev server can optionally use turbopack with --turbopack flag
   // Externalize native modules to prevent bundling issues
   serverExternalPackages: ['re2', 'sharp'],
+
+  // Webpack configuration for production builds
+  webpack: (config, { isServer }) => {
+    // Ensure proper module resolution
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    return config;
+  },
 
   // Security headers
   async headers() {

@@ -22,7 +22,8 @@ export const metadata: Metadata = generateSEOMetadata({
     "code generator",
     "free dev tools",
   ],
-  canonicalUrl: "https://brandingtools.dev/dev-tools",
+  ogImage: "/og-image-dev-tools.png",
+  canonicalUrl: "https://ziriverse.com/dev-tools",
 });
 
 export default function DevToolsLayout({
@@ -37,16 +38,16 @@ export default function DevToolsLayout({
           generateToolSchema(
             "Developer Utilities",
             "4 essential developer tools: JSON to TypeScript, CSS unit converter, SVG path visualizer, and regex tester with real-time processing.",
-            "https://brandingtools.dev/dev-tools"
+            "https://ziriverse.com/dev-tools"
           ),
           generateBreadcrumbSchema([
-            { name: "Home", url: "https://brandingtools.dev" },
-            { name: "Developer Tools", url: "https://brandingtools.dev/dev-tools" },
+            { name: "Home", url: "https://ziriverse.com" },
+            { name: "Developer Tools", url: "https://ziriverse.com/dev-tools" },
           ]),
           generateWebPageSchema(
             "Developer Utilities",
             "Essential developer tools for modern web development",
-            "https://brandingtools.dev/dev-tools"
+            "https://ziriverse.com/dev-tools"
           ),
         ]}
       />

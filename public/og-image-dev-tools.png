@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c2d12;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ef4444;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+
+  <!-- Icon -->
+  <rect x="150" y="195" width="250" height="240" rx="20" fill="url(#iconGrad)" opacity="0.2"/>
+  <g transform="translate(200, 240)">
+    <text x="50" y="80" font-family="monospace" font-size="120" font-weight="bold" fill="#f97316">&lt;/&gt;</text>
+  </g>
+
+  <!-- Content -->
+  <text x="500" y="240" font-family="Inter, system-ui, sans-serif" font-size="72" font-weight="bold" fill="#ffffff">
+    Developer Tools
+  </text>
+
+  <text x="500" y="310" font-family="Inter, system-ui, sans-serif" font-size="32" fill="#94a3b8">
+    Essential utilities for modern development
+  </text>
+
+  <!-- Features -->
+  <text x="500" y="380" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#cbd5e1">
+    • JSON to TypeScript Converter
+  </text>
+  <text x="500" y="420" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#cbd5e1">
+    • CSS Unit Converter with clamp()
+  </text>
+  <text x="500" y="460" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#cbd5e1">
+    • SVG Path Visualizer & Regex Tester
+  </text>
+
+  <!-- Footer -->
+  <text x="500" y="550" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="500" fill="#64748b">
+    ziriverse.com/dev-tools
+  </text>
+</svg>

@@ -22,7 +22,8 @@ export const metadata: Metadata = generateSEOMetadata({
     "image filters",
     "free image tool",
   ],
-  canonicalUrl: "https://brandingtools.dev/image-converter",
+  ogImage: "/og-image-image-converter.png",
+  canonicalUrl: "https://ziriverse.com/image-converter",
 });
 
 export default function ImageConverterLayout({
@@ -37,16 +38,16 @@ export default function ImageConverterLayout({
           generateToolSchema(
             "Advanced Image Converter",
             "Convert images between 8+ formats with resize, transform, and filter options. Supports AVIF, WebP, PNG, JPEG, GIF, BMP, TIFF, ICO.",
-            "https://brandingtools.dev/image-converter"
+            "https://ziriverse.com/image-converter"
           ),
           generateBreadcrumbSchema([
-            { name: "Home", url: "https://brandingtools.dev" },
-            { name: "Image Converter", url: "https://brandingtools.dev/image-converter" },
+            { name: "Home", url: "https://ziriverse.com" },
+            { name: "Image Converter", url: "https://ziriverse.com/image-converter" },
           ]),
           generateWebPageSchema(
             "Advanced Image Converter",
             "Professional image conversion tool with 8+ format support",
-            "https://brandingtools.dev/image-converter"
+            "https://ziriverse.com/image-converter"
           ),
         ]}
       />

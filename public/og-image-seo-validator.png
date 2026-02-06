@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14532d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+
+  <!-- Icon -->
+  <circle cx="275" cy="315" r="120" fill="url(#iconGrad)" opacity="0.2"/>
+  <g transform="translate(215, 255)">
+    <circle cx="60" cy="60" r="50" stroke="#10b981" stroke-width="4" fill="none"/>
+    <circle cx="100" cy="100" r="8" fill="#10b981"/>
+    <line x1="100" y1="100" x2="140" y2="140" stroke="#10b981" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- Content -->
+  <text x="500" y="240" font-family="Inter, system-ui, sans-serif" font-size="72" font-weight="bold" fill="#ffffff">
+    SEO Validator
+  </text>
+
+  <text x="500" y="310" font-family="Inter, system-ui, sans-serif" font-size="32" fill="#94a3b8">
+    Advanced SEO analysis with 100+ data points
+  </text>
+
+  <!-- Features -->
+  <text x="500" y="380" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#cbd5e1">
+    • Meta Tags, Open Graph, Twitter Cards
+  </text>
+  <text x="500" y="420" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#cbd5e1">
+    • Preview for 6 Social Platforms
+  </text>
+  <text x="500" y="460" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#cbd5e1">
+    • SEO Score & Comprehensive Reports
+  </text>
+
+  <!-- Footer -->
+  <text x="500" y="550" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="500" fill="#64748b">
+    ziriverse.com/seo-validator
+  </text>
+</svg>

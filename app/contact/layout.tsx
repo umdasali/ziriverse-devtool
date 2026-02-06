@@ -7,9 +7,9 @@ import {
 } from "@/lib/seo";
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: "Contact Us - Get in Touch with Branding Tools",
+  title: "Contact Us - Get in Touch with Ziriverse",
   description:
-    "Contact Branding Tools for support, feedback, or collaboration. Based in Dhanbad (Jharkhand) and Kolkata (West Bengal), India. Email: umdasali@gmail.com. Connect via GitHub or LinkedIn.",
+    "Contact Ziriverse for support, feedback, or collaboration. Professional branding tools for modern creators. Email: hello@ziriverse.com. Connect via GitHub, Twitter, or LinkedIn.",
   keywords: [
     "contact",
     "support",
@@ -20,7 +20,7 @@ export const metadata: Metadata = generateSEOMetadata({
     "Kolkata developer",
     "India",
   ],
-  canonicalUrl: "https://brandingtools.dev/contact",
+  canonicalUrl: "https://ziriverse.com/contact",
 });
 
 // Generate ContactPoint structured data
@@ -30,35 +30,22 @@ function generateContactPointSchema() {
     "@type": "ContactPage",
     mainEntity: {
       "@type": "Organization",
-      name: "Branding Tools",
-      email: "umdasali@gmail.com",
-      url: "https://brandingtools.dev",
-      logo: "https://brandingtools.dev/logo.png",
+      name: "Ziriverse",
+      email: "hello@ziriverse.com",
+      url: "https://ziriverse.com",
+      logo: "https://ziriverse.com/favicon.svg",
       sameAs: [
-        "https://github.com/umdasali",
-        "https://www.linkedin.com/in/md-ali-sher-ali-265153284/",
+        "https://twitter.com/ziriverse",
+        "https://github.com/ziriverse",
+        "https://linkedin.com/company/ziriverse",
       ],
       contactPoint: [
         {
           "@type": "ContactPoint",
-          email: "umdasali@gmail.com",
+          email: "hello@ziriverse.com",
           contactType: "customer support",
           areaServed: "Worldwide",
-          availableLanguage: ["English", "Hindi"],
-        },
-      ],
-      address: [
-        {
-          "@type": "PostalAddress",
-          addressLocality: "Dhanbad",
-          addressRegion: "Jharkhand",
-          addressCountry: "IN",
-        },
-        {
-          "@type": "PostalAddress",
-          addressLocality: "New Town, Kolkata",
-          addressRegion: "West Bengal",
-          addressCountry: "IN",
+          availableLanguage: ["English"],
         },
       ],
     },
@@ -76,13 +63,13 @@ export default function ContactLayout({
         data={[
           generateContactPointSchema(),
           generateBreadcrumbSchema([
-            { name: "Home", url: "https://brandingtools.dev" },
-            { name: "Contact", url: "https://brandingtools.dev/contact" },
+            { name: "Home", url: "https://ziriverse.com" },
+            { name: "Contact", url: "https://ziriverse.com/contact" },
           ]),
           generateWebPageSchema(
             "Contact Us - Get in Touch",
-            "Contact page for Branding Tools with email, locations, and social links",
-            "https://brandingtools.dev/contact"
+            "Contact page for Ziriverse with email and social links",
+            "https://ziriverse.com/contact"
           ),
         ]}
       />

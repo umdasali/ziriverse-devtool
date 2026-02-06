@@ -31,9 +31,9 @@ import {
 } from "@/lib/seo";
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: "Branding Tools - Free Professional Web Development Utilities",
+  title: "Ziriverse - Professional Branding Tools for Modern Creators",
   description:
-    "Professional toolkit for web developers featuring advanced image converter (8+ formats), comprehensive SEO validator (100+ checks), design system generator, JSON to TypeScript, CSS converters, SVG visualizer, and regex tester. Privacy-first, client-side processing.",
+    "Professional branding tools for modern creators. Convert images (8+ formats), validate SEO (100+ checks), generate design systems, and access developer utilities. Privacy-first, client-side processing.",
   keywords: [
     "image converter",
     "SEO validator",
@@ -44,9 +44,10 @@ export const metadata: Metadata = generateSEOMetadata({
     "regex tester",
     "web development tools",
     "free developer tools",
-    "privacy-first tools"
+    "privacy-first tools",
+    "branding tools"
   ],
-  canonicalUrl: "https://brandingtools.dev",
+  canonicalUrl: "https://ziriverse.com",
 });
 
 const features = [
@@ -174,9 +175,9 @@ export default function HomePage() {
           generateWebsiteSchema(),
           generateSoftwareApplicationSchema(),
           generateWebPageSchema(
-            "Branding Tools - Free Professional Web Development Utilities",
-            "Professional toolkit for web developers with 4 powerful tools",
-            "https://brandingtools.dev"
+            "Ziriverse - Professional Branding Tools",
+            "Professional branding tools for modern creators with 4 powerful utilities",
+            "https://ziriverse.com"
           ),
         ]}
       />

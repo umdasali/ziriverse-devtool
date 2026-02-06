@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+
+  <!-- Grid pattern -->
+  <g opacity="0.1">
+    <line x1="0" y1="0" x2="1200" y2="630" stroke="#3b82f6" stroke-width="1"/>
+    <line x1="1200" y1="0" x2="0" y2="630" stroke="#8b5cf6" stroke-width="1"/>
+    <circle cx="600" cy="315" r="200" fill="none" stroke="#ec4899" stroke-width="2"/>
+    <circle cx="600" cy="315" r="300" fill="none" stroke="#3b82f6" stroke-width="1"/>
+  </g>
+
+  <!-- Main content -->
+  <text x="600" y="220" font-family="Inter, system-ui, sans-serif" font-size="80" font-weight="bold" fill="url(#textGrad)" text-anchor="middle">
+    Ziriverse
+  </text>
+
+  <text x="600" y="290" font-family="Inter, system-ui, sans-serif" font-size="36" fill="#94a3b8" text-anchor="middle">
+    Professional Branding Tools
+  </text>
+
+  <!-- Features -->
+  <g>
+    <text x="600" y="360" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#cbd5e1" text-anchor="middle">
+      Image Converter • SEO Validator • Design System Generator
+    </text>
+  </g>
+
+  <!-- Badge -->
+  <rect x="480" y="400" width="240" height="50" rx="25" fill="#3b82f6" opacity="0.2"/>
+  <text x="600" y="432" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="600" fill="#60a5fa" text-anchor="middle">
+    100% Free • Privacy First
+  </text>
+
+  <!-- URL -->
+  <text x="600" y="520" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="500" fill="#64748b" text-anchor="middle">
+    ziriverse.com
+  </text>
+</svg>

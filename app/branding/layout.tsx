@@ -22,7 +22,8 @@ export const metadata: Metadata = generateSEOMetadata({
     "brand colors",
     "typography system",
   ],
-  canonicalUrl: "https://brandingtools.dev/branding",
+  ogImage: "/og-image-branding.png",
+  canonicalUrl: "https://ziriverse.com/branding",
 });
 
 export default function BrandingLayout({
@@ -37,16 +38,16 @@ export default function BrandingLayout({
           generateToolSchema(
             "Design System Generator",
             "Generate complete design systems with 100+ properties. Export to CSS, SCSS, JSON, Tailwind, or JavaScript with live preview and dark mode.",
-            "https://brandingtools.dev/branding"
+            "https://ziriverse.com/branding"
           ),
           generateBreadcrumbSchema([
-            { name: "Home", url: "https://brandingtools.dev" },
-            { name: "Design System", url: "https://brandingtools.dev/branding" },
+            { name: "Home", url: "https://ziriverse.com" },
+            { name: "Design System", url: "https://ziriverse.com/branding" },
           ]),
           generateWebPageSchema(
             "Design System Generator",
             "Professional design system generator with 100+ properties and 5 export formats",
-            "https://brandingtools.dev/branding"
+            "https://ziriverse.com/branding"
           ),
         ]}
       />

@@ -22,7 +22,8 @@ export const metadata: Metadata = generateSEOMetadata({
     "twitter card validator",
     "free SEO tool",
   ],
-  canonicalUrl: "https://brandingtools.dev/seo-validator",
+  ogImage: "/og-image-seo-validator.png",
+  canonicalUrl: "https://ziriverse.com/seo-validator",
 });
 
 export default function SEOValidatorLayout({
@@ -37,16 +38,16 @@ export default function SEOValidatorLayout({
           generateToolSchema(
             "Comprehensive SEO Validator",
             "Advanced SEO analysis with 100+ checkpoints covering meta tags, content quality, performance, and social media previews for 6 platforms.",
-            "https://brandingtools.dev/seo-validator"
+            "https://ziriverse.com/seo-validator"
           ),
           generateBreadcrumbSchema([
-            { name: "Home", url: "https://brandingtools.dev" },
-            { name: "SEO Validator", url: "https://brandingtools.dev/seo-validator" },
+            { name: "Home", url: "https://ziriverse.com" },
+            { name: "SEO Validator", url: "https://ziriverse.com/seo-validator" },
           ]),
           generateWebPageSchema(
             "Comprehensive SEO Validator",
             "Professional SEO analysis tool with 100+ checkpoints and platform previews",
-            "https://brandingtools.dev/seo-validator"
+            "https://ziriverse.com/seo-validator"
           ),
         ]}
       />

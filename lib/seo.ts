@@ -11,7 +11,7 @@ interface SEOProps {
   noindex?: boolean;
 }
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://brandingtools.dev";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ziriverse.com";
 
 export function generateMetadata({
   title,
@@ -23,9 +23,9 @@ export function generateMetadata({
   canonicalUrl,
   noindex = false,
 }: SEOProps): Metadata {
-  const fullTitle = title.includes("Branding Tools")
+  const fullTitle = title.includes("Ziriverse")
     ? title
-    : `${title} | Branding Tools - Free Web Development Utilities`;
+    : `${title} | Ziriverse - Professional Branding Tools`;
 
   return {
     title: fullTitle,
@@ -39,9 +39,9 @@ export function generateMetadata({
       "free tools",
       ...keywords,
     ],
-    authors: [{ name: "Branding Tools" }],
-    creator: "Branding Tools",
-    publisher: "Branding Tools",
+    authors: [{ name: "Ziriverse" }],
+    creator: "Ziriverse",
+    publisher: "Ziriverse",
     robots: {
       index: !noindex,
       follow: !noindex,
@@ -60,7 +60,7 @@ export function generateMetadata({
       title: fullTitle,
       description,
       url: canonicalUrl || siteUrl,
-      siteName: "Branding Tools",
+      siteName: "Ziriverse",
       images: [
         {
           url: ogImage,
@@ -77,7 +77,7 @@ export function generateMetadata({
       title: fullTitle,
       description,
       images: [ogImage],
-      creator: "@brandingtools",
+      creator: "@ziriverse",
     },
     verification: {
       google: "your-google-verification-code",
@@ -94,9 +94,9 @@ export function generateWebsiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Branding Tools",
+    name: "Ziriverse",
     description:
-      "Free professional web development tools including image converter, SEO validator, design system generator, and developer utilities",
+      "Professional branding tools for modern creators. Convert images, validate SEO, and generate custom design systems - all in one powerful platform.",
     url: siteUrl,
     potentialAction: {
       "@type": "SearchAction",
@@ -122,7 +122,7 @@ export function generateWebPageSchema(
     url,
     isPartOf: {
       "@type": "WebSite",
-      name: "Branding Tools",
+      name: "Ziriverse",
       url: siteUrl,
     },
   };
@@ -132,7 +132,7 @@ export function generateSoftwareApplicationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Branding Tools",
+    name: "Ziriverse",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     offers: {
@@ -146,7 +146,7 @@ export function generateSoftwareApplicationSchema() {
       ratingCount: "1250",
     },
     description:
-      "Professional web development toolkit featuring image conversion, SEO validation, design system generation, and developer utilities. All tools run client-side for privacy and speed.",
+      "Professional branding tools for modern creators. Convert images, validate SEO, and generate custom design systems - all in one powerful platform.",
     featureList: [
       "Advanced Image Converter with 8+ formats",
       "SEO Validator with 100+ checkpoints",

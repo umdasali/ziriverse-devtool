@@ -5,11 +5,36 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: `Privacy Policy for ${siteConfig.name}. Learn how we protect your data and respect your privacy.`,
+  description: `Privacy Policy for ${siteConfig.name}. Learn how we protect your data and respect your privacy. No data collection, client-side processing only.`,
+  keywords: [
+    "privacy policy",
+    "data protection",
+    "client-side processing",
+    "no tracking",
+    "privacy-first tools",
+  ],
+  alternates: {
+    canonical: `${siteConfig.url}/privacy`,
+  },
   openGraph: {
     title: `Privacy Policy | ${siteConfig.name}`,
     description: `Privacy Policy for ${siteConfig.name}. Learn how we protect your data and respect your privacy.`,
     url: `${siteConfig.url}/privacy`,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} Privacy Policy`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: `Privacy Policy | ${siteConfig.name}`,
+    description: `Privacy Policy for ${siteConfig.name}. No data collection, client-side processing, no tracking.`,
+    images: [siteConfig.ogImage],
+    creator: siteConfig.twitterCreator,
   },
 };
 

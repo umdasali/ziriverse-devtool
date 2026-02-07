@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { siteConfig } from "@/lib/site-config";
 
 interface SEOProps {
   title: string;
@@ -11,24 +12,25 @@ interface SEOProps {
   noindex?: boolean;
 }
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ziriverse.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || siteConfig.url;
 
 export function generateMetadata({
   title,
   description,
   keywords = [],
-  ogImage = "/og-image.png",
+  ogImage = siteConfig.ogImage,
   ogType = "website",
   twitterCard = "summary_large_image",
   canonicalUrl,
   noindex = false,
 }: SEOProps): Metadata {
-  const fullTitle = title.includes("Ziriverse")
+  // Use absolute title to prevent root layout template from double-branding
+  const displayTitle = title.includes(siteConfig.name)
     ? title
-    : `${title} | Ziriverse - Professional Branding Tools`;
+    : `${title} | ${siteConfig.name}`;
 
   return {
-    title: fullTitle,
+    title: { absolute: displayTitle },
     description,
     keywords: [
       "web development tools",
@@ -39,9 +41,9 @@ export function generateMetadata({
       "free tools",
       ...keywords,
     ],
-    authors: [{ name: "Ziriverse" }],
-    creator: "Ziriverse",
-    publisher: "Ziriverse",
+    authors: [{ name: siteConfig.name }],
+    creator: siteConfig.name,
+    publisher: siteConfig.name,
     robots: {
       index: !noindex,
       follow: !noindex,
@@ -57,10 +59,10 @@ export function generateMetadata({
       canonical: canonicalUrl || siteUrl,
     },
     openGraph: {
-      title: fullTitle,
+      title: displayTitle,
       description,
       url: canonicalUrl || siteUrl,
-      siteName: "Ziriverse",
+      siteName: siteConfig.name,
       images: [
         {
           url: ogImage,
@@ -74,15 +76,10 @@ export function generateMetadata({
     },
     twitter: {
       card: twitterCard,
-      title: fullTitle,
+      title: displayTitle,
       description,
       images: [ogImage],
-      creator: "@ziriverse",
-    },
-    verification: {
-      google: "your-google-verification-code",
-      yandex: "your-yandex-verification-code",
-      yahoo: "your-yahoo-verification-code",
+      creator: siteConfig.twitterCreator,
     },
   };
 }
@@ -94,9 +91,8 @@ export function generateWebsiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Ziriverse",
-    description:
-      "Professional branding tools for modern creators. Convert images, validate SEO, and generate custom design systems - all in one powerful platform.",
+    name: siteConfig.name,
+    description: siteConfig.description,
     url: siteUrl,
     potentialAction: {
       "@type": "SearchAction",
@@ -122,7 +118,7 @@ export function generateWebPageSchema(
     url,
     isPartOf: {
       "@type": "WebSite",
-      name: "Ziriverse",
+      name: siteConfig.name,
       url: siteUrl,
     },
   };
@@ -132,7 +128,7 @@ export function generateSoftwareApplicationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Ziriverse",
+    name: siteConfig.name,
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     offers: {
@@ -145,8 +141,7 @@ export function generateSoftwareApplicationSchema() {
       ratingValue: "4.8",
       ratingCount: "1250",
     },
-    description:
-      "Professional branding tools for modern creators. Convert images, validate SEO, and generate custom design systems - all in one powerful platform.",
+    description: siteConfig.description,
     featureList: [
       "Advanced Image Converter with 8+ formats",
       "SEO Validator with 100+ checkpoints",

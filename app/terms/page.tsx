@@ -6,10 +6,34 @@ import { Card, CardContent } from "@/components/ui/card";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: `Terms of Service for ${siteConfig.name}. Please read these terms carefully before using our platform.`,
+  keywords: [
+    "terms of service",
+    "terms and conditions",
+    "usage policy",
+    "free tools terms",
+  ],
+  alternates: {
+    canonical: `${siteConfig.url}/terms`,
+  },
   openGraph: {
     title: `Terms of Service | ${siteConfig.name}`,
     description: `Terms of Service for ${siteConfig.name}. Please read these terms carefully before using our platform.`,
     url: `${siteConfig.url}/terms`,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} Terms of Service`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: `Terms of Service | ${siteConfig.name}`,
+    description: `Terms of Service for ${siteConfig.name}. Please read these terms carefully before using our platform.`,
+    images: [siteConfig.ogImage],
+    creator: siteConfig.twitterCreator,
   },
 };
 

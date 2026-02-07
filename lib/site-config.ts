@@ -49,10 +49,12 @@ export const siteConfig = {
       { name: "Image Converter", href: "/image-converter" },
       { name: "SEO Validator", href: "/seo-validator" },
       { name: "Design System", href: "/branding" },
+      { name: "Dev Tools", href: "/dev-tools" },
     ],
     company: [
       { name: "About", href: "/about" },
       { name: "Contact", href: "/contact" },
+      { name: "Documentation", href: "/docs" },
     ],
     legal: [
       { name: "Privacy Policy", href: "/privacy" },

@@ -14,6 +14,7 @@ const navItems = [
   { href: "/seo-validator", label: "SEO Validator" },
   { href: "/branding", label: "Design System" },
   { href: "/dev-tools", label: "Dev Tools" },
+  { href: "/docs", label: "Docs" },
   { href: "/contact", label: "Contact" },
   { href: "/about", label: "About" },
 ];

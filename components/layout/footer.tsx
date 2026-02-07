@@ -117,7 +117,7 @@ export function Footer() {
               &copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
             </p>
             <p className="text-sm text-muted-foreground text-center sm:text-right">
-              Made with ❤️ by <a href="www.kiriverse.com">KiriVerse</a>
+              Made with ❤️ by <a href="https://www.kiriverse.com">KiriVerse</a>
             </p>
           </div>
         </div>

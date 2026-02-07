@@ -120,12 +120,16 @@ export async function POST(request: NextRequest) {
 
     const convertedBuffer = await sharpInstance.toBuffer();
 
+    // Determine proper mime type (ICO uses x-icon)
+    const mimeType = format === "ico" ? "image/x-icon" : `image/${format}`;
+    const fileExtension = format === "jpeg" ? "jpg" : format;
+
     // Return the converted image
     return new NextResponse(new Uint8Array(convertedBuffer), {
       headers: {
-        "Content-Type": `image/${format}`,
+        "Content-Type": mimeType,
         "Content-Length": convertedBuffer.length.toString(),
-        "Content-Disposition": `attachment; filename="converted.${format}"`,
+        "Content-Disposition": `attachment; filename="converted.${fileExtension}"`,
       },
     });
   } catch (error) {

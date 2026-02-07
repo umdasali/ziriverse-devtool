@@ -72,16 +72,22 @@ export async function convertImageClient(
 
         // Convert to blob
         const mimeType = getMimeType(options.format);
+
+        // For formats that might not be supported by toBlob, fallback to PNG
+        const safeMimeType = ['image/avif', 'image/tiff', 'image/bmp'].includes(mimeType)
+          ? 'image/png'
+          : mimeType;
+
         canvas.toBlob(
           async (blob) => {
             if (!blob) {
-              reject(new Error("Failed to convert image"));
+              reject(new Error("Failed to convert image. This format may not be supported in your browser."));
               return;
             }
 
             // Apply compression if needed
             let finalBlob = blob;
-            if (options.quality < 100 && (options.format === 'jpeg' || options.format === 'webp')) {
+            if (options.quality < 100 && (options.format === 'jpeg' || options.format === 'webp' || options.format === 'png')) {
               const compressionOptions = {
                 maxSizeMB: 10,
                 maxWidthOrHeight: Math.max(canvas.width, canvas.height),
@@ -106,7 +112,7 @@ export async function convertImageClient(
               url: URL.createObjectURL(finalBlob),
             });
           },
-          mimeType,
+          safeMimeType,
           options.quality / 100
         );
       } catch (error) {
@@ -172,11 +178,18 @@ function applyFilters(
 
   ctx.putImageData(imageData, 0, 0);
 
-  // Apply blur using canvas filter (CSS-based)
+  // Apply blur using canvas filter (CSS-based) via temp canvas
   if (filter.blur && filter.blur > 0) {
-    ctx.filter = `blur(${filter.blur}px)`;
-    ctx.drawImage(canvas, 0, 0);
-    ctx.filter = 'none';
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    const tempCtx = tempCanvas.getContext('2d');
+    if (tempCtx) {
+      tempCtx.filter = `blur(${filter.blur}px)`;
+      tempCtx.drawImage(canvas, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(tempCanvas, 0, 0);
+    }
   }
 
   // Apply sharpen (simple unsharp mask)
@@ -188,6 +201,7 @@ function applyFilters(
     if (tempCtx) {
       tempCtx.filter = 'contrast(1.2) brightness(1.1)';
       tempCtx.drawImage(canvas, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(tempCanvas, 0, 0);
     }
   }

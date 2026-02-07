@@ -53,13 +53,19 @@ export default function ImageConverterPage() {
 
   // Extract image dimensions when image is loaded
   useEffect(() => {
-    if (image) {
+    if (image && image.preview && !image.width && !image.height) {
       const img = new Image();
       img.onload = () => {
-        setImage(prev => prev ? { ...prev, width: img.width, height: img.height } : null);
+        setImage(prev => {
+          if (prev && !prev.width && !prev.height) {
+            return { ...prev, width: img.width, height: img.height };
+          }
+          return prev;
+        });
       };
       img.src = image.preview;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [image?.preview]);
 
   const handleConvert = async () => {
@@ -67,7 +73,10 @@ export default function ImageConverterPage() {
 
     setIsConverting(true);
     try {
-      if (useServer) {
+      // Force client-side for ICO and BMP formats (Sharp doesn't support these outputs reliably)
+      const forceClientSide = format === "ico" || format === "bmp";
+
+      if (useServer && !forceClientSide) {
         // Server-side conversion
         const formData = new FormData();
         formData.append("file", image.file);

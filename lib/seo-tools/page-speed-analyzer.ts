@@ -55,7 +55,7 @@ export function analyzeHtml(html: string, url: string, loadTime: number): PageSp
     id: "https",
     label: "Uses HTTPS",
     status: isHttps ? "pass" : "fail",
-    description: isHttps ? "Site uses secure HTTPS connection" : "Site does not use HTTPS — migrate to improve security and SEO",
+    description: isHttps ? "Site uses secure HTTPS connection" : "Site does not use HTTPS - migrate to improve security and SEO",
     impact: "high",
   });
 
@@ -65,7 +65,7 @@ export function analyzeHtml(html: string, url: string, loadTime: number): PageSp
     id: "html-size",
     label: "HTML Size",
     status: sizeKB < 100 ? "pass" : sizeKB < 300 ? "warning" : "fail",
-    description: `HTML document is ${sizeKB.toFixed(1)}KB${sizeKB > 100 ? " — consider reducing HTML size" : ""}`,
+    description: `HTML document is ${sizeKB.toFixed(1)}KB${sizeKB > 100 ? " - consider reducing HTML size" : ""}`,
     impact: "medium",
   });
 
@@ -74,7 +74,7 @@ export function analyzeHtml(html: string, url: string, loadTime: number): PageSp
     id: "load-time",
     label: "Response Time",
     status: loadTime < 1000 ? "pass" : loadTime < 3000 ? "warning" : "fail",
-    description: `Server responded in ${loadTime}ms${loadTime > 1000 ? " — aim for under 1 second" : ""}`,
+    description: `Server responded in ${loadTime}ms${loadTime > 1000 ? " - aim for under 1 second" : ""}`,
     impact: "high",
   });
 
@@ -83,7 +83,7 @@ export function analyzeHtml(html: string, url: string, loadTime: number): PageSp
     id: "scripts",
     label: "JavaScript Files",
     status: resourceCounts.scripts < 5 ? "pass" : resourceCounts.scripts < 10 ? "warning" : "fail",
-    description: `Found ${resourceCounts.scripts} script tag(s)${resourceCounts.scripts >= 5 ? " — consider bundling or deferring scripts" : ""}`,
+    description: `Found ${resourceCounts.scripts} script tag(s)${resourceCounts.scripts >= 5 ? " - consider bundling or deferring scripts" : ""}`,
     impact: "medium",
   });
 
@@ -92,7 +92,7 @@ export function analyzeHtml(html: string, url: string, loadTime: number): PageSp
     id: "stylesheets",
     label: "CSS Files",
     status: resourceCounts.stylesheets < 3 ? "pass" : resourceCounts.stylesheets < 6 ? "warning" : "fail",
-    description: `Found ${resourceCounts.stylesheets} stylesheet(s)${resourceCounts.stylesheets >= 3 ? " — consider combining CSS files" : ""}`,
+    description: `Found ${resourceCounts.stylesheets} stylesheet(s)${resourceCounts.stylesheets >= 3 ? " - consider combining CSS files" : ""}`,
     impact: "medium",
   });
 
@@ -102,7 +102,7 @@ export function analyzeHtml(html: string, url: string, loadTime: number): PageSp
     id: "viewport",
     label: "Mobile Viewport",
     status: hasViewport ? "pass" : "fail",
-    description: hasViewport ? "Page has a viewport meta tag for mobile responsiveness" : "Missing viewport meta tag — add for mobile responsiveness",
+    description: hasViewport ? "Page has a viewport meta tag for mobile responsiveness" : "Missing viewport meta tag - add for mobile responsiveness",
     impact: "high",
   });
 
@@ -112,7 +112,7 @@ export function analyzeHtml(html: string, url: string, loadTime: number): PageSp
     id: "title",
     label: "Title Tag",
     status: hasTitle ? "pass" : "fail",
-    description: hasTitle ? "Page has a title tag" : "Missing title tag — essential for SEO",
+    description: hasTitle ? "Page has a title tag" : "Missing title tag - essential for SEO",
     impact: "high",
   });
 
@@ -122,7 +122,7 @@ export function analyzeHtml(html: string, url: string, loadTime: number): PageSp
     id: "description",
     label: "Meta Description",
     status: hasDescription ? "pass" : "warning",
-    description: hasDescription ? "Page has a meta description" : "Missing meta description — add for better search snippets",
+    description: hasDescription ? "Page has a meta description" : "Missing meta description - add for better search snippets",
     impact: "medium",
   });
 
@@ -131,7 +131,7 @@ export function analyzeHtml(html: string, url: string, loadTime: number): PageSp
     id: "images",
     label: "Image Count",
     status: resourceCounts.images < 10 ? "pass" : resourceCounts.images < 30 ? "warning" : "fail",
-    description: `Found ${resourceCounts.images} image(s)${resourceCounts.images >= 10 ? " — consider lazy loading images" : ""}`,
+    description: `Found ${resourceCounts.images} image(s)${resourceCounts.images >= 10 ? " - consider lazy loading images" : ""}`,
     impact: "low",
   });
 

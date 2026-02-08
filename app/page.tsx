@@ -98,7 +98,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    quote: "JWT decoder, API tester, JSON formatter — all the dev tools I need in one place.",
+    quote: "JWT decoder, API tester, JSON formatter - all the dev tools I need in one place.",
     author: "Emily Thompson",
     role: "Full-Stack Developer",
     rating: 5,
@@ -167,7 +167,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                SEO analysis, developer utilities, and branding tools — all in one powerful,
+                SEO analysis, developer utilities, and branding tools - all in one powerful,
                 privacy-focused platform. Free forever, no sign-up required.
               </p>
 

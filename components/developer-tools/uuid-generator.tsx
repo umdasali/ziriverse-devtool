@@ -167,7 +167,7 @@ export function UUIDGeneratorTool() {
             <h4 className="text-sm font-medium">About UUID v4</h4>
             <p className="text-xs text-muted-foreground">
               UUID v4 uses random or pseudo-random numbers. The probability of collision is
-              astronomically low — you would need to generate 1 billion UUIDs per second for about
+              astronomically low - you would need to generate 1 billion UUIDs per second for about
               85 years to have a 50% chance of a collision.
             </p>
             <Badge variant="secondary" className="text-xs">

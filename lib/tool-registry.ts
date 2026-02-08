@@ -112,7 +112,7 @@ export const toolCategories: ToolCategory[] = [
   {
     id: "developer",
     name: "Developer Tools",
-    description: "Essential utilities for modern web development — format, encode, decode, test, and generate",
+    description: "Essential utilities for modern web development - format, encode, decode, test, and generate",
     icon: Code2,
     href: "/tools/developer",
     gradient: "from-orange-500 to-red-500",

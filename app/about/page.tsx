@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: `Learn more about ${siteConfig.name} — the all-in-one developer platform with ${allTools.length}+ free tools for SEO, development, and branding.`,
+  description: `Learn more about ${siteConfig.name} - the all-in-one developer platform with ${allTools.length}+ free tools for SEO, development, and branding.`,
   keywords: [
     "about Ziriverse",
     "developer platform",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: `About Us | ${siteConfig.name}`,
-    description: `Learn more about ${siteConfig.name} — the all-in-one developer platform with ${allTools.length}+ free tools.`,
+    description: `Learn more about ${siteConfig.name} - the all-in-one developer platform with ${allTools.length}+ free tools.`,
     url: `${siteConfig.url}/about`,
     images: [
       {
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `About Us | ${siteConfig.name}`,
-    description: `Learn more about ${siteConfig.name} — the all-in-one developer platform with ${allTools.length}+ free tools.`,
+    description: `Learn more about ${siteConfig.name} - the all-in-one developer platform with ${allTools.length}+ free tools.`,
     images: [siteConfig.ogImage],
     creator: siteConfig.twitterCreator,
   },
@@ -151,7 +151,7 @@ export default function AboutPage() {
               <p>
                 Today, {siteConfig.name} serves thousands of creators worldwide
                 with {allTools.length}+ tools across {toolCategories.length}{" "}
-                categories — SEO tools, developer utilities, and branding
+                categories - SEO tools, developer utilities, and branding
                 solutions. But we&apos;re just getting started.
               </p>
             </div>

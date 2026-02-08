@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -27,9 +27,9 @@ import {
 } from "@/lib/seo";
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: "Ziriverse - The Developer Platform for SEO, Development & Branding",
+  title: "Ziriverse - Free SEO, Developer & Branding Tools",
   description:
-    "15+ free developer tools — SEO analysis, JSON formatter, JWT decoder, API tester, design system generator, image converter, color palette generator, and more. Privacy-first, no sign-up required.",
+    "15+ free tools for SEO analysis, code formatting, API testing, image conversion, and brand design. Privacy-first, no sign-up required.",
   keywords: [
     "developer tools",
     "SEO tools",
@@ -160,9 +160,9 @@ export default function HomePage() {
               </Badge>
 
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-                The Developer Platform for{" "}
+                Free Tools for{" "}
                 <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                  Modern Creators
+                  SEO, Development & Branding
                 </span>
               </h1>
 
@@ -238,7 +238,7 @@ export default function HomePage() {
                       )}
                       <Button asChild variant="outline" size="sm">
                         <Link href={category.href}>
-                          View All <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                          All {category.name} <ArrowRight className="ml-1 h-3.5 w-3.5" />
                         </Link>
                       </Button>
                     </div>
@@ -270,7 +270,7 @@ export default function HomePage() {
                               )}
                             </div>
                           </div>
-                          <CardTitle className="text-sm mt-2">{tool.name}</CardTitle>
+                          <div className="text-sm font-semibold leading-none tracking-tight mt-2">{tool.name}</div>
                         </CardHeader>
                         <CardContent className="pt-0">
                           <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
@@ -278,7 +278,7 @@ export default function HomePage() {
                           </p>
                           <Button asChild size="sm" variant="ghost" className="w-full group/btn h-8 text-xs">
                             <Link href={tool.href}>
-                              Try it Now
+                              Try {tool.name}
                               <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover/btn:translate-x-1" />
                             </Link>
                           </Button>
@@ -353,7 +353,7 @@ export default function HomePage() {
                         <benefit.icon className="h-8 w-8 text-primary" />
                       </div>
                     </div>
-                    <CardTitle className="text-lg">{benefit.title}</CardTitle>
+                    <div className="text-lg font-semibold leading-none tracking-tight">{benefit.title}</div>
                     <CardDescription>{benefit.description}</CardDescription>
                   </CardHeader>
                 </Card>
@@ -413,10 +413,10 @@ export default function HomePage() {
               {faqs.map((faq, index) => (
                 <Card key={index} className="border-2">
                   <CardHeader>
-                    <CardTitle className="text-lg flex items-start gap-3">
+                    <div className="text-lg font-semibold leading-none tracking-tight flex items-start gap-3">
                       <ChevronDown className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                       {faq.question}
-                    </CardTitle>
+                    </div>
                     <CardDescription className="text-base pl-8">
                       {faq.answer}
                     </CardDescription>

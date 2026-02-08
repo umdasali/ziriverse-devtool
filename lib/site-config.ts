@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Ziriverse",
   domain: "ziriverse.com",
   url: "https://ziriverse.com",
-  description: "The all-in-one developer platform — 15+ free tools for SEO, development, and branding. Privacy-first, no sign-up required.",
+  description: "The all-in-one developer platform - 15+ free tools for SEO, development, and branding. Privacy-first, no sign-up required.",
   tagline: "Your Complete Developer Platform",
 
   // SEO

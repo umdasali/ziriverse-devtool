@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
+import { allTools, toolCategories } from "@/lib/tool-registry";
 import {
   ImageIcon,
   SearchCheck,
@@ -10,13 +11,16 @@ import {
   BookOpen,
   FileText,
   HelpCircle,
+  Globe,
+  Palette,
+  Paintbrush,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "Documentation",
-  description: `Learn how to use all ${siteConfig.name} tools with step-by-step guides and tutorials. Image converter, SEO validator, design system generator, and developer tools.`,
+  description: `Learn how to use all ${allTools.length}+ ${siteConfig.name} tools with step-by-step guides and tutorials. SEO tools, developer tools, branding tools, and more.`,
   keywords: [
     "documentation",
     "user guide",
@@ -25,13 +29,21 @@ export const metadata: Metadata = {
     "SEO validator guide",
     "design system guide",
     "developer tools guide",
+    "robots.txt generator guide",
+    "sitemap generator guide",
+    "schema generator guide",
+    "page speed analyzer guide",
+    "json formatter guide",
+    "base64 encoder guide",
+    "jwt decoder guide",
+    "color palette guide",
   ],
   alternates: {
     canonical: `${siteConfig.url}/docs`,
   },
   openGraph: {
     title: `Documentation | ${siteConfig.name}`,
-    description: `Step-by-step guides and tutorials for all ${siteConfig.name} tools.`,
+    description: `Step-by-step guides and tutorials for all ${allTools.length}+ ${siteConfig.name} tools.`,
     url: `${siteConfig.url}/docs`,
     images: [
       {
@@ -45,13 +57,13 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `Documentation | ${siteConfig.name}`,
-    description: `Step-by-step guides and tutorials for all ${siteConfig.name} tools.`,
+    description: `Step-by-step guides and tutorials for all ${allTools.length}+ ${siteConfig.name} tools.`,
     images: [siteConfig.ogImage],
     creator: siteConfig.twitterCreator,
   },
 };
 
-const tools = [
+const docPages = [
   {
     title: "Image Converter",
     description:
@@ -101,13 +113,13 @@ const tools = [
     ],
   },
   {
-    title: "Developer Tools",
+    title: "Dev Tools Hub",
     description:
       "Essential utilities for modern web development including JSON to TypeScript, CSS unit converter, SVG visualizer, and regex tester.",
     href: "/docs/dev-tools",
     icon: Code2,
     color: "from-orange-500 to-red-500",
-    badge: "4 Tools",
+    badge: "4-in-1",
     features: [
       "JSON to TypeScript",
       "CSS unit converter",
@@ -115,9 +127,60 @@ const tools = [
       "Regex tester",
     ],
   },
+  {
+    title: "SEO Tools",
+    description:
+      "Generate robots.txt files, XML sitemaps, JSON-LD schema markup, and analyze page speed performance.",
+    href: "/docs/seo-tools",
+    icon: Globe,
+    color: "from-green-500 to-emerald-500",
+    badge: "4 New Tools",
+    isNew: true,
+    features: [
+      "Robots.txt generator",
+      "XML sitemap generator",
+      "Schema markup generator",
+      "Page speed analyzer",
+    ],
+  },
+  {
+    title: "Developer Tools",
+    description:
+      "JSON formatter, Base64 encoder, JWT decoder, code minifier, UUID generator, API tester, and standalone regex tester.",
+    href: "/docs/developer-tools",
+    icon: Code2,
+    color: "from-orange-500 to-red-500",
+    badge: "7 New Tools",
+    isNew: true,
+    features: [
+      "JSON Formatter & Validator",
+      "Base64 Encode/Decode",
+      "JWT Decoder",
+      "HTML/CSS/JS Minifier",
+      "UUID Generator & API Tester",
+    ],
+  },
+  {
+    title: "Color Palette Generator",
+    description:
+      "Generate harmonious color palettes using color theory. WCAG contrast checking, shades & tints, and export in CSS, SCSS, or JSON.",
+    href: "/docs/color-palette",
+    icon: Paintbrush,
+    color: "from-purple-500 to-pink-500",
+    badge: "New",
+    isNew: true,
+    features: [
+      "6 color harmony types",
+      "Shades & tints generation",
+      "WCAG contrast checker",
+      "CSS/SCSS/JSON export",
+    ],
+  },
 ];
 
 export default function DocsPage() {
+  const newToolCount = allTools.filter((t) => t.isNew).length;
+
   return (
     <div className="container mx-auto px-4 py-12 sm:py-16 lg:py-24">
       {/* Hero Section */}
@@ -133,24 +196,32 @@ export default function DocsPage() {
           </span>
         </h1>
         <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
-          Step-by-step guides for every tool. From basic usage to advanced
+          Step-by-step guides for {allTools.length}+ tools across{" "}
+          {toolCategories.length} categories. From basic usage to advanced
           features, find everything you need to get the most out of our platform.
         </p>
+        {newToolCount > 0 && (
+          <div className="mt-4">
+            <Badge className="bg-green-500/10 text-green-600 border-green-500/20">
+              {newToolCount} New Tools Added
+            </Badge>
+          </div>
+        )}
       </div>
 
       {/* Quick Links */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 mb-16">
-        {tools.map((tool) => (
-          <Link key={tool.href} href={tool.href}>
+        {docPages.slice(0, 4).map((doc) => (
+          <Link key={doc.href} href={doc.href}>
             <Card className="h-full border-2 hover:border-primary/50 transition-all hover:shadow-md group cursor-pointer">
               <CardContent className="p-4 flex items-center gap-3">
                 <div
-                  className={`p-2 rounded-lg bg-gradient-to-br ${tool.color} text-white shrink-0`}
+                  className={`p-2 rounded-lg bg-gradient-to-br ${doc.color} text-white shrink-0`}
                 >
-                  <tool.icon className="h-5 w-5" />
+                  <doc.icon className="h-5 w-5" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-sm">{tool.title}</div>
+                  <div className="font-semibold text-sm">{doc.title}</div>
                   <div className="text-xs text-muted-foreground">
                     View guide
                   </div>
@@ -162,30 +233,78 @@ export default function DocsPage() {
         ))}
       </div>
 
-      {/* Tool Documentation Cards */}
+      {/* New Tools Section */}
+      <div className="mb-16">
+        <div className="flex items-center gap-3 mb-8">
+          <h2 className="text-2xl font-bold">New Tool Guides</h2>
+          <Badge className="bg-green-500/10 text-green-600 border-green-500/20">
+            New
+          </Badge>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {docPages.filter((d) => d.isNew).map((doc) => (
+            <Link key={doc.href} href={doc.href}>
+              <Card className="h-full border-2 border-green-500/20 hover:border-green-500/50 transition-all hover:shadow-md group cursor-pointer">
+                <CardContent className="p-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className={`p-2 rounded-lg bg-gradient-to-br ${doc.color} text-white shrink-0`}
+                    >
+                      <doc.icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <div className="font-semibold">{doc.title}</div>
+                      <Badge variant="secondary" className="text-xs mt-1">
+                        {doc.badge}
+                      </Badge>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                    {doc.description}
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-sm text-primary font-medium group-hover:underline">
+                    Read guide
+                    <ArrowRight className="h-3 w-3" />
+                  </span>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* All Documentation Cards */}
       <div className="space-y-8">
-        {tools.map((tool) => (
-          <Card key={tool.href} className="border-2 overflow-hidden">
+        <h2 className="text-2xl font-bold">All Guides</h2>
+        {docPages.map((doc) => (
+          <Card key={doc.href} className="border-2 overflow-hidden">
             <div className="grid md:grid-cols-3">
               <div className="md:col-span-2 p-6 sm:p-8">
                 <div className="flex items-center gap-3 mb-4">
                   <div
-                    className={`p-3 rounded-lg bg-gradient-to-br ${tool.color} text-white`}
+                    className={`p-3 rounded-lg bg-gradient-to-br ${doc.color} text-white`}
                   >
-                    <tool.icon className="h-6 w-6" />
+                    <doc.icon className="h-6 w-6" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold">{tool.title}</h2>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-2xl font-bold">{doc.title}</h2>
+                      {doc.isNew && (
+                        <Badge className="bg-green-500/10 text-green-600 border-green-500/20 text-xs">
+                          New
+                        </Badge>
+                      )}
+                    </div>
                     <Badge variant="secondary" className="mt-1">
-                      {tool.badge}
+                      {doc.badge}
                     </Badge>
                   </div>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mb-6">
-                  {tool.description}
+                  {doc.description}
                 </p>
                 <Link
-                  href={tool.href}
+                  href={doc.href}
                   className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
                 >
                   Read full documentation
@@ -198,7 +317,7 @@ export default function DocsPage() {
                   What you&apos;ll learn
                 </h3>
                 <ul className="space-y-2">
-                  {tool.features.map((feature) => (
+                  {doc.features.map((feature) => (
                     <li
                       key={feature}
                       className="text-sm text-muted-foreground flex items-start gap-2"
@@ -244,8 +363,8 @@ export default function DocsPage() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                All tools are completely free with no limits. No account
-                required, no watermarks, and no hidden fees.
+                All {allTools.length}+ tools are completely free with no limits.
+                No account required, no watermarks, and no hidden fees.
               </p>
             </CardContent>
           </Card>
@@ -284,20 +403,27 @@ export default function DocsPage() {
       <div className="mt-20 text-center">
         <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
         <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Jump into any tool and start creating. No setup required.
+          Jump into any of our {allTools.length}+ tools and start creating. No
+          setup required.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href="/image-converter"
+            href="/tools/seo"
             className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
           >
-            Try Image Converter
+            Explore SEO Tools
           </Link>
           <Link
-            href="/seo-validator"
+            href="/tools/developer"
             className="inline-flex items-center justify-center rounded-lg border-2 border-primary px-8 py-3 text-sm font-medium transition-colors hover:bg-primary/10"
           >
-            Try SEO Validator
+            Explore Developer Tools
+          </Link>
+          <Link
+            href="/tools/branding"
+            className="inline-flex items-center justify-center rounded-lg border-2 px-8 py-3 text-sm font-medium transition-colors hover:bg-muted"
+          >
+            Explore Branding Tools
           </Link>
         </div>
       </div>

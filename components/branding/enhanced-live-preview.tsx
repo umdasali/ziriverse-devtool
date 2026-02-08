@@ -2,7 +2,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useBrandingStore } from "@/stores/branding-store";
 import { Moon, Sun, AlertCircle, CheckCircle2, Info, AlertTriangle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,8 +23,8 @@ export function EnhancedLivePreview() {
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
+      <CardHeader className="pb-3 sm:pb-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle>Live Preview</CardTitle>
             <CardDescription>See your design system in action</CardDescription>
@@ -34,6 +33,7 @@ export function EnhancedLivePreview() {
             variant="outline"
             size="sm"
             onClick={toggleDarkMode}
+            className="w-fit"
           >
             {isDarkMode ? <Sun className="h-4 w-4 mr-2" /> : <Moon className="h-4 w-4 mr-2" />}
             {isDarkMode ? 'Light' : 'Dark'} Mode
@@ -42,7 +42,7 @@ export function EnhancedLivePreview() {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="typography">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
             <TabsTrigger value="typography">Typography</TabsTrigger>
             <TabsTrigger value="colors">Colors</TabsTrigger>
             <TabsTrigger value="components">Components</TabsTrigger>
@@ -51,7 +51,7 @@ export function EnhancedLivePreview() {
 
           {/* Typography Tab */}
           <TabsContent value="typography">
-            <div style={previewStyle} className="space-y-4">
+            <div style={previewStyle} className="space-y-4 overflow-hidden">
               <h1 style={{ fontSize: state.typography.headingSizes.h1, fontWeight: state.typography.fontWeights.bold }}>
                 Heading 1
               </h1>

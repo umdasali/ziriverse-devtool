@@ -6,9 +6,9 @@ export function Footer() {
   return (
     <footer className="border-t bg-muted/30">
       <div className="container mx-auto px-4 py-12 sm:py-16">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-6">
           {/* Brand */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:col-span-2">
             <Link href="/" className="flex items-center space-x-2 group">
               <div className="p-1.5 rounded-lg bg-gradient-to-br from-primary to-purple-500 group-hover:scale-110 transition-transform">
                 <Sparkles className="h-4 w-4 text-white" />
@@ -58,11 +58,11 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Product */}
+          {/* SEO Tools */}
           <div>
-            <h3 className="font-semibold mb-4">Product</h3>
-            <ul className="space-y-3">
-              {siteConfig.footerLinks.product.map((link) => (
+            <h3 className="font-semibold mb-4">SEO Tools</h3>
+            <ul className="space-y-2.5">
+              {siteConfig.footerLinks.seoTools.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -75,10 +75,40 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Developer Tools */}
           <div>
-            <h3 className="font-semibold mb-4">Company</h3>
-            <ul className="space-y-3">
+            <h3 className="font-semibold mb-4">Developer Tools</h3>
+            <ul className="space-y-2.5">
+              {siteConfig.footerLinks.developerTools.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Branding & Company */}
+          <div>
+            <h3 className="font-semibold mb-4">Branding</h3>
+            <ul className="space-y-2.5">
+              {siteConfig.footerLinks.brandingTools.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <h3 className="font-semibold mb-4 mt-6">Company</h3>
+            <ul className="space-y-2.5">
               {siteConfig.footerLinks.company.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -95,7 +125,7 @@ export function Footer() {
           {/* Legal */}
           <div>
             <h3 className="font-semibold mb-4">Legal</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5">
               {siteConfig.footerLinks.legal.map((link) => (
                 <li key={link.href}>
                   <Link

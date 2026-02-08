@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
+import { allTools, toolCategories } from "@/lib/tool-registry";
 import {
   Target,
   Zap,
@@ -8,10 +9,6 @@ import {
   Heart,
   Users,
   Rocket,
-  ImageIcon,
-  SearchCheck,
-  Sparkles,
-  Code2,
   ArrowRight,
   Globe,
   Lock,
@@ -22,20 +19,22 @@ import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: `Learn more about ${siteConfig.name} and our mission to provide professional branding tools for modern creators.`,
+  description: `Learn more about ${siteConfig.name} — the all-in-one developer platform with ${allTools.length}+ free tools for SEO, development, and branding.`,
   keywords: [
     "about Ziriverse",
-    "branding tools",
-    "web development platform",
+    "developer platform",
     "free developer tools",
+    "SEO tools",
+    "branding tools",
     "privacy-first tools",
+    "web development platform",
   ],
   alternates: {
     canonical: `${siteConfig.url}/about`,
   },
   openGraph: {
     title: `About Us | ${siteConfig.name}`,
-    description: `Learn more about ${siteConfig.name} and our mission to provide professional branding tools for modern creators.`,
+    description: `Learn more about ${siteConfig.name} — the all-in-one developer platform with ${allTools.length}+ free tools.`,
     url: `${siteConfig.url}/about`,
     images: [
       {
@@ -49,7 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `About Us | ${siteConfig.name}`,
-    description: `Learn more about ${siteConfig.name} and our mission to provide professional branding tools for modern creators.`,
+    description: `Learn more about ${siteConfig.name} — the all-in-one developer platform with ${allTools.length}+ free tools.`,
     images: [siteConfig.ogImage],
     creator: siteConfig.twitterCreator,
   },
@@ -93,55 +92,16 @@ export default function AboutPage() {
     },
   ];
 
-  const tools = [
-    {
-      icon: ImageIcon,
-      title: "Image Converter",
-      description:
-        "Convert images between 8+ formats with advanced resize, transform, and filter controls. Process client-side for privacy or server-side for quality.",
-      badge: "8+ Formats",
-      href: "/image-converter",
-      color: "from-blue-500 to-cyan-500",
-    },
-    {
-      icon: SearchCheck,
-      title: "SEO Validator",
-      description:
-        "Comprehensive SEO analysis with 100+ data points. Score your pages, audit content and security, preview social cards across 6 platforms, and export detailed reports.",
-      badge: "100+ Checks",
-      href: "/seo-validator",
-      color: "from-green-500 to-emerald-500",
-    },
-    {
-      icon: Sparkles,
-      title: "Design System Generator",
-      description:
-        "Create complete design systems with 100+ customizable properties. Configure typography, colors, dark mode, shadows, animations, and export in CSS, SCSS, JSON, Tailwind, or JavaScript.",
-      badge: "100+ Properties",
-      href: "/branding",
-      color: "from-purple-500 to-pink-500",
-    },
-    {
-      icon: Code2,
-      title: "Developer Tools",
-      description:
-        "Essential utilities including JSON to TypeScript converter, CSS unit converter with fluid clamp(), SVG path visualizer, and regex tester with explanations.",
-      badge: "4 Tools",
-      href: "/dev-tools",
-      color: "from-orange-500 to-red-500",
-    },
-  ];
-
   const team = [
     {
       role: "Our Vision",
       description:
-        "To be the go-to platform for professional branding and design tools that empower creators worldwide.",
+        "To be the go-to platform for professional developer and branding tools that empower creators worldwide.",
     },
     {
       role: "Our Mission",
       description:
-        "To provide fast, secure, and powerful tools that make branding and design accessible to everyone.",
+        "To provide fast, secure, and powerful tools that make SEO, development, and branding accessible to everyone.",
     },
     {
       role: "Our Promise",
@@ -149,6 +109,8 @@ export default function AboutPage() {
         "To maintain the highest standards of quality, privacy, and user experience in everything we build.",
     },
   ];
+
+  const newToolCount = allTools.filter((t) => t.isNew).length;
 
   return (
     <div className="container mx-auto px-4 py-12 sm:py-16 lg:py-24">
@@ -161,9 +123,10 @@ export default function AboutPage() {
           </span>
         </h1>
         <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
-          We&apos;re building the ultimate toolkit for modern creators.
-          Professional-grade tools for image conversion, SEO optimization, design
-          system generation, and developer utilities - all in one platform.
+          We&apos;re building the ultimate developer platform for modern
+          creators. {allTools.length}+ professional-grade tools for SEO
+          optimization, web development, image conversion, design system
+          generation, and more - all free, all in one place.
         </p>
       </div>
 
@@ -176,68 +139,98 @@ export default function AboutPage() {
               <p>
                 {siteConfig.name} was born from a simple observation: creators
                 spend too much time switching between multiple tools for basic
-                branding tasks. We believed there had to be a better way.
+                tasks. We believed there had to be a better way.
               </p>
               <p>
                 Our journey began with a question: What if we could combine the
-                most essential branding and development tools into one seamless,
+                most essential developer and branding tools into one seamless,
                 privacy-focused platform? What if we could make professional-grade
                 tools accessible to everyone, from indie creators to enterprise
                 teams?
               </p>
               <p>
                 Today, {siteConfig.name} serves thousands of creators worldwide
-                with tools for image conversion, SEO validation, design system
-                generation, and developer utilities. But we&apos;re just getting
-                started.
+                with {allTools.length}+ tools across {toolCategories.length}{" "}
+                categories — SEO tools, developer utilities, and branding
+                solutions. But we&apos;re just getting started.
               </p>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* What We Offer */}
+      {/* What We Offer - Tool Categories */}
       <div className="mb-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             What We Offer
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Four powerful tools designed for modern creators and developers
+            {allTools.length}+ powerful tools across {toolCategories.length}{" "}
+            categories designed for modern creators and developers
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2">
-          {tools.map((tool) => (
+        <div className="space-y-8">
+          {toolCategories.map((category) => (
             <Card
-              key={tool.title}
-              className="border-2 hover:border-primary/50 transition-all hover:shadow-md group"
+              key={category.id}
+              className="border-2 hover:border-primary/50 transition-all hover:shadow-md"
             >
               <CardContent className="p-6">
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-4 mb-4">
                   <div
-                    className={`p-3 rounded-lg bg-gradient-to-br ${tool.color} text-white shrink-0`}
+                    className={`p-3 rounded-lg bg-gradient-to-br ${category.gradient} text-white shrink-0`}
                   >
-                    <tool.icon className="h-6 w-6" />
+                    <category.icon className="h-6 w-6" />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-bold text-lg">{tool.title}</h3>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-bold text-lg">{category.name}</h3>
                       <Badge variant="secondary" className="text-xs">
-                        {tool.badge}
+                        {category.tools.length} Tools
                       </Badge>
+                      {category.tools.some((t) => t.isNew) && (
+                        <Badge className="bg-green-500/10 text-green-600 border-green-500/20 text-xs">
+                          New
+                        </Badge>
+                      )}
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                      {tool.description}
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {category.description}
                     </p>
-                    <Link
-                      href={tool.href}
-                      className="inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline"
-                    >
-                      Try it now
-                      <ArrowRight className="h-3 w-3" />
-                    </Link>
                   </div>
+                </div>
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 mt-4">
+                  {category.tools.map((tool) => (
+                    <Link
+                      key={tool.id}
+                      href={tool.href}
+                      className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted/50 transition-colors group"
+                    >
+                      <tool.icon className="h-4 w-4 text-muted-foreground group-hover:text-primary shrink-0" />
+                      <span className="text-sm group-hover:text-primary transition-colors">
+                        {tool.name}
+                      </span>
+                      {tool.isNew && (
+                        <Badge
+                          variant="secondary"
+                          className="text-[10px] px-1.5 py-0"
+                        >
+                          New
+                        </Badge>
+                      )}
+                    </Link>
+                  ))}
+                </div>
+                <div className="mt-4 pt-4 border-t">
+                  <Link
+                    href={category.href}
+                    className="inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline"
+                  >
+                    View all {category.name}
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -276,8 +269,8 @@ export default function AboutPage() {
               </div>
               <h3 className="font-bold text-lg mb-2">No Account Required</h3>
               <p className="text-sm text-muted-foreground">
-                All tools work instantly with no sign-up, no watermarks, and no
-                hidden fees. Your settings and history are stored locally.
+                All {allTools.length}+ tools work instantly with no sign-up, no
+                watermarks, and no hidden fees. Settings are stored locally.
               </p>
             </CardContent>
           </Card>
@@ -354,21 +347,27 @@ export default function AboutPage() {
       <div className="bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-8 sm:p-12 mb-20">
         <div className="grid gap-8 sm:grid-cols-4 text-center">
           <div>
-            <div className="text-4xl sm:text-5xl font-bold mb-2">4</div>
+            <div className="text-4xl sm:text-5xl font-bold mb-2">
+              {allTools.length}+
+            </div>
             <div className="text-sm text-muted-foreground uppercase tracking-wide">
               Powerful Tools
             </div>
           </div>
           <div>
-            <div className="text-4xl sm:text-5xl font-bold mb-2">100+</div>
+            <div className="text-4xl sm:text-5xl font-bold mb-2">
+              {toolCategories.length}
+            </div>
             <div className="text-sm text-muted-foreground uppercase tracking-wide">
-              Features
+              Categories
             </div>
           </div>
           <div>
-            <div className="text-4xl sm:text-5xl font-bold mb-2">5</div>
+            <div className="text-4xl sm:text-5xl font-bold mb-2">
+              {newToolCount}
+            </div>
             <div className="text-sm text-muted-foreground uppercase tracking-wide">
-              Export Formats
+              New Tools
             </div>
           </div>
           <div>
@@ -387,20 +386,20 @@ export default function AboutPage() {
         </h2>
         <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
           Join thousands of creators who trust {siteConfig.name} for their
-          branding and development needs.
+          development and branding needs.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href="/image-converter"
+            href="/tools/seo"
             className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
           >
-            Try Image Converter
+            Explore SEO Tools
           </Link>
           <Link
-            href="/seo-validator"
+            href="/tools/developer"
             className="inline-flex items-center justify-center rounded-lg border-2 border-primary px-8 py-3 text-sm font-medium transition-colors hover:bg-primary/10"
           >
-            Try SEO Validator
+            Explore Developer Tools
           </Link>
           <Link
             href="/docs"

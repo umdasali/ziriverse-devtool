@@ -2,21 +2,32 @@ export const siteConfig = {
   name: "Ziriverse",
   domain: "ziriverse.com",
   url: "https://ziriverse.com",
-  description: "Professional branding tools for modern creators. Convert images, validate SEO, and generate custom design systems - all in one powerful platform.",
-  tagline: "Your Complete Branding Toolkit",
+  description: "The all-in-one developer platform — 15+ free tools for SEO, development, and branding. Privacy-first, no sign-up required.",
+  tagline: "Your Complete Developer Platform",
 
   // SEO
   keywords: [
+    "developer tools",
+    "SEO tools",
     "branding tools",
     "design system generator",
     "image converter",
     "SEO validator",
-    "meta tag validator",
+    "JSON formatter",
+    "base64 encoder",
+    "JWT decoder",
+    "HTML minifier",
+    "regex tester",
+    "UUID generator",
+    "API tester",
+    "robots.txt generator",
+    "sitemap generator",
+    "schema generator",
+    "page speed analyzer",
+    "color palette generator",
     "web design tools",
     "brand identity",
     "design tokens",
-    "color palette generator",
-    "typography tools"
   ],
 
   // Open Graph
@@ -34,22 +45,28 @@ export const siteConfig = {
     linkedin: "https://linkedin.com/company/ziriverse",
   },
 
-  // Navigation
-  navigation: [
-    { name: "Home", href: "/" },
-    { name: "Image Converter", href: "/image-converter" },
-    { name: "SEO Validator", href: "/seo-validator" },
-    { name: "Design System", href: "/branding" },
-    { name: "About", href: "/about" },
-  ],
-
   // Footer Links
   footerLinks: {
-    product: [
-      { name: "Image Converter", href: "/image-converter" },
+    seoTools: [
       { name: "SEO Validator", href: "/seo-validator" },
-      { name: "Design System", href: "/branding" },
-      { name: "Dev Tools", href: "/dev-tools" },
+      { name: "Robots.txt Generator", href: "/tools/seo/robots-txt-generator" },
+      { name: "Sitemap Generator", href: "/tools/seo/sitemap-generator" },
+      { name: "Schema Generator", href: "/tools/seo/schema-generator" },
+      { name: "Page Speed Analyzer", href: "/tools/seo/page-speed-analyzer" },
+    ],
+    developerTools: [
+      { name: "Dev Tools Hub", href: "/dev-tools" },
+      { name: "JSON Formatter", href: "/tools/developer/json-formatter" },
+      { name: "Base64 Encode/Decode", href: "/tools/developer/base64-encoder" },
+      { name: "JWT Decoder", href: "/tools/developer/jwt-decoder" },
+      { name: "HTML/CSS/JS Minifier", href: "/tools/developer/minifier" },
+      { name: "UUID Generator", href: "/tools/developer/uuid-generator" },
+      { name: "API Tester", href: "/tools/developer/api-tester" },
+    ],
+    brandingTools: [
+      { name: "Design System Generator", href: "/branding" },
+      { name: "Image Converter", href: "/image-converter" },
+      { name: "Color Palette Generator", href: "/tools/branding/color-palette" },
     ],
     company: [
       { name: "About", href: "/about" },
@@ -61,34 +78,6 @@ export const siteConfig = {
       { name: "Terms of Service", href: "/terms" },
     ],
   },
-
-  // Features
-  features: [
-    {
-      id: "image-converter",
-      title: "Image Converter",
-      description: "Convert images between 8 formats with advanced controls for resize, transform, and filters.",
-      icon: "ImageIcon",
-      href: "/image-converter",
-      color: "from-blue-500 to-cyan-500",
-    },
-    {
-      id: "seo-validator",
-      title: "SEO Validator",
-      description: "Advanced SEO analysis with 100+ data points, scoring system, and platform previews.",
-      icon: "SearchCheck",
-      href: "/seo-validator",
-      color: "from-purple-500 to-pink-500",
-    },
-    {
-      id: "design-system",
-      title: "Design System Generator",
-      description: "Create comprehensive design systems with 100+ properties and export in 5 formats.",
-      icon: "Sparkles",
-      href: "/branding",
-      color: "from-orange-500 to-red-500",
-    },
-  ],
 };
 
 export type SiteConfig = typeof siteConfig;

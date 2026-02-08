@@ -63,8 +63,8 @@ export function AdvancedCodeOutput() {
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
+      <CardHeader className="pb-3 sm:pb-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <CardTitle className="flex items-center gap-2">
               <FileCode2 className="h-5 w-5" />
@@ -74,7 +74,7 @@ export function AdvancedCodeOutput() {
               Download in multiple formats for different frameworks
             </CardDescription>
           </div>
-          <Button onClick={handleDownloadAll} variant="outline" size="sm">
+          <Button onClick={handleDownloadAll} variant="outline" size="sm" className="w-fit">
             <Download className="mr-2 h-4 w-4" />
             Download All
           </Button>
@@ -82,9 +82,9 @@ export function AdvancedCodeOutput() {
       </CardHeader>
       <CardContent className="space-y-4">
         <Tabs value={selectedFormat} onValueChange={(v) => setSelectedFormat(v as ExportFormat['type'])}>
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5">
             {formats.map(format => (
-              <TabsTrigger key={format.type} value={format.type}>
+              <TabsTrigger key={format.type} value={format.type} className="text-xs sm:text-sm">
                 {format.label}
               </TabsTrigger>
             ))}
@@ -93,26 +93,26 @@ export function AdvancedCodeOutput() {
           {formats.map(format => (
             <TabsContent key={format.type} value={format.type} className="space-y-4">
               <div className="relative">
-                <pre className="bg-muted p-4 rounded-lg overflow-x-auto max-h-[500px] text-xs font-mono">
+                <pre className="bg-muted p-3 sm:p-4 rounded-lg overflow-x-auto max-h-[400px] sm:max-h-[500px] text-xs font-mono">
                   <code>{currentExport.content}</code>
                 </pre>
-                <div className="absolute top-2 right-2 flex gap-2">
+                <div className="absolute top-2 right-2 flex gap-1 sm:gap-2">
                   <Button size="sm" onClick={handleCopy} variant="secondary">
                     {copied ? (
                       <>
-                        <Check className="h-3 w-3 mr-1" />
-                        Copied
+                        <Check className="h-3 w-3 sm:mr-1" />
+                        <span className="hidden sm:inline">Copied</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="h-3 w-3 mr-1" />
-                        Copy
+                        <Copy className="h-3 w-3 sm:mr-1" />
+                        <span className="hidden sm:inline">Copy</span>
                       </>
                     )}
                   </Button>
                   <Button size="sm" onClick={handleDownload} variant="secondary">
-                    <Download className="h-3 w-3 mr-1" />
-                    Download
+                    <Download className="h-3 w-3 sm:mr-1" />
+                    <span className="hidden sm:inline">Download</span>
                   </Button>
                 </div>
               </div>

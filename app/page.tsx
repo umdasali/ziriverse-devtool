@@ -4,24 +4,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  ImageIcon,
-  Globe,
-  Palette,
-  Code2,
   ArrowRight,
   Zap,
   Shield,
   Sparkles,
-  Check,
   ChevronDown,
   Users,
   TrendingUp,
   Heart,
   Star,
   Download,
-  Globe2
+  Globe2,
 } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
+import { toolCategories, allTools, newTools } from "@/lib/tool-registry";
 import { StructuredData } from "@/components/seo/structured-data";
 import {
   generateMetadata as generateSEOMetadata,
@@ -31,63 +27,32 @@ import {
 } from "@/lib/seo";
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: "Ziriverse - Professional Branding Tools for Modern Creators",
+  title: "Ziriverse - The Developer Platform for SEO, Development & Branding",
   description:
-    "Professional branding tools for modern creators. Convert images (8+ formats), validate SEO (100+ checks), generate design systems, and access developer utilities. Privacy-first, client-side processing.",
+    "15+ free developer tools — SEO analysis, JSON formatter, JWT decoder, API tester, design system generator, image converter, color palette generator, and more. Privacy-first, no sign-up required.",
   keywords: [
-    "image converter",
-    "SEO validator",
-    "design system generator",
-    "JSON to TypeScript",
-    "CSS unit converter",
-    "SVG path visualizer",
+    "developer tools",
+    "SEO tools",
+    "branding tools",
+    "JSON formatter",
+    "base64 encoder",
+    "JWT decoder",
+    "API tester",
+    "minifier",
+    "UUID generator",
     "regex tester",
-    "web development tools",
+    "robots.txt generator",
+    "sitemap generator",
+    "schema generator",
+    "page speed analyzer",
+    "color palette generator",
+    "image converter",
+    "design system generator",
     "free developer tools",
     "privacy-first tools",
-    "branding tools"
   ],
   canonicalUrl: "https://ziriverse.com",
 });
-
-const features = [
-  {
-    title: "Image Converter",
-    description: "Convert images between 8 formats with advanced controls for resize, transform, and filters. Lightning-fast client-side processing.",
-    icon: ImageIcon,
-    href: "/image-converter",
-    badge: "8 Formats",
-    gradient: "from-blue-500 to-cyan-500",
-    stats: "Support for AVIF, WebP, PNG, JPEG, GIF, BMP, TIFF, ICO",
-  },
-  {
-    title: "SEO Validator",
-    description: "Advanced SEO analysis with 100+ data points, scoring system, and previews for 6 social platforms. Export reports in JSON/CSV.",
-    icon: Globe,
-    href: "/seo-validator",
-    badge: "100+ Data Points",
-    gradient: "from-green-500 to-emerald-500",
-    stats: "Facebook, Twitter, LinkedIn, Discord, Reddit, WhatsApp",
-  },
-  {
-    title: "Design System Generator",
-    description: "Create comprehensive design systems with 100+ properties. Export in 5 formats with version control and dark mode support.",
-    icon: Palette,
-    href: "/branding",
-    badge: "100+ Properties",
-    gradient: "from-purple-500 to-pink-500",
-    stats: "CSS, SCSS, JSON, Tailwind, JavaScript exports",
-  },
-  {
-    title: "Developer Utilities",
-    description: "JSON to TypeScript, CSS converters, SVG visualizer, and regex tester. Essential tools for modern development workflows.",
-    icon: Code2,
-    href: "/dev-tools",
-    badge: "4 Tools",
-    gradient: "from-orange-500 to-red-500",
-    stats: "JSON-TS, CSS Units, SVG Path, Regex Tester",
-  },
-];
 
 const benefits = [
   {
@@ -113,7 +78,7 @@ const benefits = [
 ];
 
 const stats = [
-  { icon: TrendingUp, value: "4", label: "Powerful Tools" },
+  { icon: TrendingUp, value: `${allTools.length}+`, label: "Powerful Tools" },
   { icon: Users, value: "50K+", label: "Active Users" },
   { icon: Download, value: "1M+", label: "Conversions" },
   { icon: Globe2, value: "150+", label: "Countries" },
@@ -127,42 +92,42 @@ const testimonials = [
     rating: 5,
   },
   {
-    quote: "Best SEO validator I've used. The scoring system helped improve our site's visibility.",
+    quote: "Best SEO validator I've used. The robots.txt and schema generators are game changers.",
     author: "Michael Rodriguez",
     role: "Marketing Manager",
     rating: 5,
   },
   {
-    quote: "Image converter with 8 formats and filters? Exactly what I needed for my workflow.",
+    quote: "JWT decoder, API tester, JSON formatter — all the dev tools I need in one place.",
     author: "Emily Thompson",
-    role: "UI/UX Designer",
+    role: "Full-Stack Developer",
     rating: 5,
   },
 ];
 
 const faqs = [
   {
-    question: "Is Branding Tools really free?",
-    answer: "Yes! All tools are completely free with no hidden costs, subscriptions, or usage limits. We believe powerful branding tools should be accessible to everyone.",
+    question: "Is Ziriverse really free?",
+    answer: `Yes! All ${allTools.length}+ tools are completely free with no hidden costs, subscriptions, or usage limits. We believe powerful developer tools should be accessible to everyone.`,
   },
   {
     question: "Is my data safe and private?",
     answer: "Absolutely. We process everything client-side in your browser. Your files and data never leave your device. We don't collect, store, or track any personal information.",
   },
   {
-    question: "What formats does the Image Converter support?",
-    answer: "We support 8 formats: AVIF, WebP, PNG, JPEG, GIF, BMP, TIFF, and ICO. You can also resize, rotate, flip, and apply 6 different filters.",
+    question: "What SEO tools are available?",
+    answer: "We offer a complete SEO toolkit: SEO Validator with 100+ checks, Robots.txt Generator, Sitemap Generator, Schema/JSON-LD Generator, and Page Speed Analyzer.",
+  },
+  {
+    question: "What developer tools are included?",
+    answer: "JSON Formatter, Base64 Encoder/Decoder, JWT Decoder, HTML/CSS/JS Minifier, Regex Tester, UUID Generator, API Tester, plus the original JSON-to-TypeScript, CSS Unit Converter, and SVG Visualizer.",
   },
   {
     question: "Can I export my design system to my project?",
     answer: "Yes! Export in 5 formats: CSS (with custom properties), SCSS (variables), JSON (design tokens), Tailwind config, or JavaScript (ES6 modules).",
   },
   {
-    question: "What platforms does the SEO Validator preview?",
-    answer: "We provide previews for 6 platforms: Facebook, Twitter, LinkedIn, Discord, Reddit, and WhatsApp. Plus advanced analysis with 100+ SEO data points.",
-  },
-  {
-    question: "Do I need an account to use Branding Tools?",
+    question: "Do I need an account to use Ziriverse?",
     answer: "No account needed! Just visit the site and start using any tool immediately. Your preferences are saved locally in your browser.",
   },
 ];
@@ -175,8 +140,8 @@ export default function HomePage() {
           generateWebsiteSchema(),
           generateSoftwareApplicationSchema(),
           generateWebPageSchema(
-            "Ziriverse - Professional Branding Tools",
-            "Professional branding tools for modern creators with 4 powerful utilities",
+            "Ziriverse - The Developer Platform",
+            `${allTools.length}+ free developer tools for SEO, development, and branding`,
             "https://ziriverse.com"
           ),
         ]}
@@ -191,33 +156,33 @@ export default function HomePage() {
             <div className="mx-auto max-w-4xl text-center space-y-8">
               <Badge className="text-sm px-4 py-1" variant="secondary">
                 <Sparkles className="h-3 w-3 mr-2 inline" />
-                100% Free · Privacy First · No Sign-Up Required
+                {allTools.length}+ Free Tools · Privacy First · No Sign-Up Required
               </Badge>
 
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-                Professional Tools for{" "}
+                The Developer Platform for{" "}
                 <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                  Modern Developers
+                  Modern Creators
                 </span>
               </h1>
 
               <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Convert images, validate SEO, generate design systems, and streamline development - all in one powerful,
+                SEO analysis, developer utilities, and branding tools — all in one powerful,
                 privacy-focused platform. Free forever, no sign-up required.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-                <Link href="/image-converter">
-                  <Button size="lg" className="group text-base px-8">
-                    Get Started Free
+                <Button asChild size="lg" className="group text-base px-8">
+                  <Link href="/tools/developer">
+                    Explore All Tools
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </Link>
-                <Link href="/dev-tools">
-                  <Button size="lg" variant="outline" className="text-base px-8">
-                    Explore Tools
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="text-base px-8">
+                  <Link href="/docs">
+                    View Documentation
+                  </Link>
+                </Button>
               </div>
             </div>
 
@@ -238,56 +203,134 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Features Section */}
+        {/* Tool Categories Section */}
         <section className="py-20 sm:py-24 bg-background">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                Everything You Need
+                Everything You Need, One Platform
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Four powerful tools designed to streamline your development workflow
+                {allTools.length}+ tools organized into three powerful categories
               </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2 max-w-6xl mx-auto">
-              {features.map((feature) => (
-                <Card
-                  key={feature.href}
-                  className="group relative overflow-hidden border-2 hover:border-primary/50 transition-all hover:shadow-xl"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity`} />
-
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className={`p-3 rounded-lg bg-gradient-to-br ${feature.gradient}`}>
-                        <feature.icon className="h-6 w-6 text-white" />
+            <div className="space-y-16 max-w-7xl mx-auto">
+              {toolCategories.map((category) => (
+                <div key={category.id}>
+                  {/* Category Header */}
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2.5 rounded-lg bg-gradient-to-br ${category.gradient}`}>
+                        <category.icon className="h-5 w-5 text-white" />
                       </div>
-                      <Badge variant="secondary" className="text-xs">{feature.badge}</Badge>
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-bold">{category.name}</h3>
+                        <p className="text-sm text-muted-foreground">{category.description}</p>
+                      </div>
                     </div>
-
-                    <CardTitle className="mt-4 text-xl">{feature.title}</CardTitle>
-                    <CardDescription className="text-base">{feature.description}</CardDescription>
-
-                    <div className="text-xs text-muted-foreground mt-4 flex items-center gap-1">
-                      <Check className="h-3 w-3 text-primary" />
-                      {feature.stats}
-                    </div>
-                  </CardHeader>
-
-                  <CardContent>
-                    <Link href={feature.href}>
-                      <Button className="w-full group/btn">
-                        Try it Now
-                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                    <div className="flex gap-2">
+                      <Badge variant="secondary">{category.tools.length} Tools</Badge>
+                      {category.tools.some((t) => t.isNew) && (
+                        <Badge className="bg-green-500/10 text-green-600 border-green-500/20">
+                          {category.tools.filter((t) => t.isNew).length} New
+                        </Badge>
+                      )}
+                      <Button asChild variant="outline" size="sm">
+                        <Link href={category.href}>
+                          View All <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                        </Link>
                       </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
+                    </div>
+                  </div>
+
+                  {/* Tool Cards Grid */}
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {category.tools.map((tool) => (
+                      <Card
+                        key={tool.id}
+                        className="group relative overflow-hidden border hover:border-primary/50 transition-all hover:shadow-lg"
+                      >
+                        <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-5 transition-opacity pointer-events-none`} />
+                        <CardHeader className="pb-2">
+                          <div className="flex items-start justify-between">
+                            <div className="p-2 rounded-lg bg-primary/10">
+                              <tool.icon className="h-4 w-4 text-primary" />
+                            </div>
+                            <div className="flex gap-1">
+                              {tool.badge && (
+                                <Badge variant="secondary" className="text-[10px] h-5">
+                                  {tool.badge}
+                                </Badge>
+                              )}
+                              {tool.isNew && (
+                                <Badge className="bg-green-500/10 text-green-600 border-green-500/20 text-[10px] h-5">
+                                  New
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                          <CardTitle className="text-sm mt-2">{tool.name}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
+                            {tool.description}
+                          </p>
+                          <Button asChild size="sm" variant="ghost" className="w-full group/btn h-8 text-xs">
+                            <Link href={tool.href}>
+                              Try it Now
+                              <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover/btn:translate-x-1" />
+                            </Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </section>
+
+        {/* What's New Section */}
+        {newTools.length > 0 && (
+          <section className="py-16 sm:py-20 bg-gradient-to-b from-green-500/5 to-background">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <Badge className="bg-green-500/10 text-green-600 border-green-500/20 mb-4">
+                  Just Launched
+                </Badge>
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+                  {newTools.length} New Tools Added
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  We&apos;ve expanded the platform with powerful new utilities across all categories
+                </p>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl mx-auto">
+                {newTools.map((tool) => (
+                  <Link
+                    key={tool.id}
+                    href={tool.href}
+                    className="flex items-center gap-3 p-3 rounded-lg border hover:border-primary/50 hover:bg-muted/50 transition-all group"
+                  >
+                    <div className="p-2 rounded-lg bg-primary/10 flex-shrink-0">
+                      <tool.icon className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium group-hover:text-primary transition-colors truncate">
+                        {tool.name}
+                      </div>
+                      <div className="text-xs text-muted-foreground truncate">{tool.shortDescription}</div>
+                    </div>
+                    <ArrowRight className="h-3.5 w-3.5 text-muted-foreground ml-auto flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Benefits Section */}
         <section className="py-20 sm:py-24 bg-gradient-to-b from-primary/5 to-background">
@@ -341,7 +384,7 @@ export default function HomePage() {
                       ))}
                     </div>
                     <CardDescription className="text-base italic">
-                      "{testimonial.quote}"
+                      &quot;{testimonial.quote}&quot;
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -389,24 +432,24 @@ export default function HomePage() {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center space-y-8">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">
-                Ready to Transform Your Workflow?
+                Ready to Supercharge Your Workflow?
               </h2>
               <p className="text-lg sm:text-xl opacity-90">
                 Join thousands of developers who trust {siteConfig.name} for their
-                development needs. No credit card required, no sign-up hassle.
+                SEO, development, and branding needs. {allTools.length}+ tools, zero cost.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-                <Link href="/image-converter">
-                  <Button size="lg" variant="secondary" className="text-base px-8 group">
-                    Start Creating Free
+                <Button asChild size="lg" variant="secondary" className="text-base px-8 group">
+                  <Link href="/tools/seo">
+                    Explore SEO Tools
                     <Sparkles className="ml-2 h-4 w-4 transition-transform group-hover:scale-110" />
-                  </Button>
-                </Link>
-                <Link href="/dev-tools">
-                  <Button size="lg" variant="outline" className="text-base px-8 bg-white/10 border-white/20 hover:bg-white/20 text-white">
-                    Explore Developer Tools
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="text-base px-8 bg-white/10 border-white/20 hover:bg-white/20 text-white">
+                  <Link href="/tools/developer">
+                    Developer Tools
+                  </Link>
+                </Button>
               </div>
             </div>
           </div>

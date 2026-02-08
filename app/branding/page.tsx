@@ -17,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -119,15 +118,15 @@ export default function BrandingPage() {
   };
 
   return (
-    <div className="container py-8 space-y-8">
+    <div className="container px-4 py-6 sm:py-8 space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Sparkles className="h-8 w-8" />
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0" />
             Advanced Design System Generator
           </h1>
-          <p className="text-muted-foreground mt-2">
+          <p className="text-sm sm:text-base text-muted-foreground mt-2">
             Create comprehensive design systems with 100+ customizable properties
           </p>
         </div>
@@ -158,15 +157,15 @@ export default function BrandingPage() {
                 {versions.map((version) => (
                   <div
                     key={version.id}
-                    className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
+                    className="flex flex-col gap-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors sm:flex-row sm:items-center sm:justify-between"
                   >
-                    <div className="flex-1">
-                      <div className="font-medium">{version.name}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium truncate">{version.name}</div>
                       <div className="text-xs text-muted-foreground">
                         {new Date(version.timestamp).toLocaleString()}
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-shrink-0">
                       <Button
                         size="sm"
                         variant="outline"
@@ -191,7 +190,7 @@ export default function BrandingPage() {
       )}
 
       {/* Quick Actions */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {/* Save Version */}
         <Card>
           <CardHeader className="pb-3">
@@ -287,7 +286,7 @@ export default function BrandingPage() {
           <EnhancedLivePreview />
 
           {/* Features */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             <Card>
               <CardHeader className="pb-3">
                 <Badge variant="secondary" className="w-fit">100+ Properties</Badge>
@@ -341,8 +340,13 @@ export default function BrandingPage() {
         {/* Customize Tab */}
         <TabsContent value="customize">
           <div className="grid gap-6 lg:grid-cols-2">
-            {/* Left Column - Controls */}
-            <div className="space-y-6">
+            {/* Preview - shown first on mobile, second on desktop */}
+            <div className="space-y-6 lg:order-2">
+              <EnhancedLivePreview />
+            </div>
+
+            {/* Controls */}
+            <div className="space-y-6 lg:order-1">
               <Tabs defaultValue="typography">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="typography">Text</TabsTrigger>
@@ -365,11 +369,6 @@ export default function BrandingPage() {
                   <AnimationControls />
                 </TabsContent>
               </Tabs>
-            </div>
-
-            {/* Right Column - Preview */}
-            <div className="space-y-6">
-              <EnhancedLivePreview />
             </div>
           </div>
         </TabsContent>

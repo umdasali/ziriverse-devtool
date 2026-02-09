@@ -10,6 +10,8 @@ import { ImageUploader } from "@/components/image-converter/image-uploader";
 import { FormatSelector } from "@/components/image-converter/format-selector";
 import { ConversionPreview } from "@/components/image-converter/conversion-preview";
 import { convertImageClient } from "@/lib/image-converter/client-converter";
+import { StructuredData } from "@/components/seo/structured-data";
+import { generateToolSchema, generateWebPageSchema, generateBreadcrumbSchema } from "@/lib/seo";
 import type {
   ImageFile,
   ImageFormat,
@@ -20,6 +22,7 @@ import type {
 } from "@/types/image";
 
 export default function ImageConverterPage() {
+  const toolUrl = "https://ziriverse.com/image-converter";
   const [image, setImage] = useState<ImageFile | null>(null);
   const [format, setFormat] = useState<ImageFormat>("webp");
   const [quality, setQuality] = useState(80);
@@ -182,9 +185,29 @@ export default function ImageConverterPage() {
   };
 
   return (
-    <div className="container py-8 space-y-8">
-      {/* Header */}
-      <div className="flex items-start justify-between">
+    <>
+      <StructuredData
+        data={[
+          generateToolSchema(
+            "Advanced Image Converter",
+            "Convert, resize, transform, and apply filters to images with support for 8+ formats including PNG, JPEG, WEBP, AVIF, GIF, BMP, TIFF, and ICO",
+            toolUrl
+          ),
+          generateWebPageSchema(
+            "Advanced Image Converter",
+            "Convert images between 8+ formats with filters",
+            toolUrl
+          ),
+          generateBreadcrumbSchema([
+            { name: "Home", url: "https://ziriverse.com" },
+            { name: "Image Converter", url: toolUrl },
+          ]),
+        ]}
+      />
+
+      <div className="container py-8 space-y-8">
+        {/* Header */}
+        <div className="flex items-start justify-between">
         <div>
           <h1 className="text-3xl font-bold">Advanced Image Converter</h1>
           <p className="text-muted-foreground mt-2">
@@ -408,6 +431,7 @@ export default function ImageConverterPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </>
   );
 }

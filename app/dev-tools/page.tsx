@@ -24,6 +24,8 @@ import { CSSUnitConverter } from "@/components/dev-tools/css-unit-converter";
 import { SVGVisualizer } from "@/components/dev-tools/svg-visualizer";
 import { RegexTester } from "@/components/dev-tools/regex-tester";
 import { ToolHistoryPanel } from "@/components/dev-tools/tool-history-panel";
+import { StructuredData } from "@/components/seo/structured-data";
+import { generateToolSchema, generateWebPageSchema, generateBreadcrumbSchema } from "@/lib/seo";
 
 import type { ToolHistoryEntry } from "@/types/dev-tools";
 
@@ -31,6 +33,7 @@ const HISTORY_KEY = "dev-tools-history";
 const MAX_HISTORY = 20;
 
 export default function DevToolsPage() {
+  const toolUrl = "https://ziriverse.com/dev-tools";
   const [activeTab, setActiveTab] = useState<ToolHistoryEntry["tool"]>("json-to-ts");
   const [showHistory, setShowHistory] = useState(false);
   const [history, setHistory] = useState<ToolHistoryEntry[]>([]);
@@ -88,9 +91,29 @@ export default function DevToolsPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+    <>
+      <StructuredData
+        data={[
+          generateToolSchema(
+            "Developer Tools",
+            "Essential utilities for modern web development including JSON to TypeScript converter, CSS unit converter, SVG visualizer, and regex tester with real-time processing",
+            toolUrl
+          ),
+          generateWebPageSchema(
+            "Developer Tools",
+            "Essential web development utilities",
+            toolUrl
+          ),
+          generateBreadcrumbSchema([
+            { name: "Home", url: "https://ziriverse.com" },
+            { name: "Developer Tools", url: toolUrl },
+          ]),
+        ]}
+      />
+
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-primary/10 rounded-lg">
             <Code2 className="w-8 h-8 text-primary" />
@@ -301,6 +324,7 @@ export default function DevToolsPage() {
           </li>
         </ul>
       </Card>
-    </div>
+      </div>
+    </>
   );
 }

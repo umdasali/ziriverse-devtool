@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Color Palette Generator - Branding Tools - Ziriverse",
+export const metadata: Metadata = generateMetadata({
+  title: "Color Palette Generator - Create Brand Colors",
   description:
     "Generate harmonious color palettes using color theory. Choose from complementary, analogous, triadic, tetradic, split-complementary, and monochromatic harmonies with WCAG contrast checking and export options.",
   keywords: [
@@ -15,7 +16,8 @@ export const metadata: Metadata = {
     "branding colors",
     "design system colors",
   ],
-};
+  canonicalUrl: "https://ziriverse.com/tools/branding/color-palette",
+});
 
 export default function ColorPaletteLayout({
   children,

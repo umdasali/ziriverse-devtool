@@ -20,9 +20,12 @@ import { SEOScoreDashboard } from "@/components/seo-validator/seo-score-dashboar
 import { AdvancedAnalysis } from "@/components/seo-validator/advanced-analysis";
 import { ExportReport } from "@/components/seo-validator/export-report";
 import { validateAdvancedSEO } from "@/lib/seo-validator/meta-validator";
+import { StructuredData } from "@/components/seo/structured-data";
+import { generateToolSchema, generateWebPageSchema, generateBreadcrumbSchema } from "@/lib/seo";
 import type { MetaTags, AdvancedSEOData, SEOHistory } from "@/types/seo";
 
 export default function SEOValidatorPage() {
+  const toolUrl = "https://ziriverse.com/seo-validator";
   const [url, setUrl] = useState("");
   const [metaTags, setMetaTags] = useState<MetaTags | null>(null);
   const [advancedData, setAdvancedData] = useState<AdvancedSEOData | null>(null);
@@ -128,9 +131,29 @@ export default function SEOValidatorPage() {
     : null;
 
   return (
-    <div className="container py-8 space-y-8">
-      {/* Header */}
-      <div className="flex items-start justify-between">
+    <>
+      <StructuredData
+        data={[
+          generateToolSchema(
+            "Advanced SEO Analyzer",
+            "Comprehensive SEO analysis with 100+ data points including meta tags, content analysis, performance metrics, and search engine optimization recommendations",
+            toolUrl
+          ),
+          generateWebPageSchema(
+            "Advanced SEO Analyzer",
+            "Analyze SEO with 100+ checkpoints and insights",
+            toolUrl
+          ),
+          generateBreadcrumbSchema([
+            { name: "Home", url: "https://ziriverse.com" },
+            { name: "SEO Validator", url: toolUrl },
+          ]),
+        ]}
+      />
+
+      <div className="container py-8 space-y-8">
+        {/* Header */}
+        <div className="flex items-start justify-between">
         <div>
           <h1 className="text-3xl font-bold">Advanced SEO Analyzer</h1>
           <p className="text-muted-foreground mt-2">
@@ -413,6 +436,7 @@ export default function SEOValidatorPage() {
           </Card>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

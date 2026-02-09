@@ -30,9 +30,12 @@ import { EnhancedLivePreview } from "@/components/branding/enhanced-live-preview
 import { AdvancedCodeOutput } from "@/components/branding/advanced-code-output";
 import { useBrandingStore } from "@/stores/branding-store";
 import { presets } from "@/lib/branding/presets";
+import { StructuredData } from "@/components/seo/structured-data";
+import { generateToolSchema, generateWebPageSchema, generateBreadcrumbSchema } from "@/lib/seo";
 import type { DesignVersion } from "@/types/branding";
 
 export default function BrandingPage() {
+  const toolUrl = "https://ziriverse.com/branding";
   const { loadPreset, reset, loadState, exportState } = useBrandingStore();
   const [versions, setVersions] = useState<DesignVersion[]>([]);
   const [showHistory, setShowHistory] = useState(false);
@@ -118,9 +121,29 @@ export default function BrandingPage() {
   };
 
   return (
-    <div className="container px-4 py-6 sm:py-8 space-y-6 sm:space-y-8">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <>
+      <StructuredData
+        data={[
+          generateToolSchema(
+            "Advanced Design System Generator",
+            "Create comprehensive design systems with 100+ customizable properties including typography, colors, spacing, shadows, animations, and export in 5 formats",
+            toolUrl
+          ),
+          generateWebPageSchema(
+            "Advanced Design System Generator",
+            "Generate custom design systems with live preview",
+            toolUrl
+          ),
+          generateBreadcrumbSchema([
+            { name: "Home", url: "https://ziriverse.com" },
+            { name: "Branding Design System", url: toolUrl },
+          ]),
+        ]}
+      />
+
+      <div className="container px-4 py-6 sm:py-8 space-y-6 sm:space-y-8">
+        {/* Header */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
             <Sparkles className="h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0" />
@@ -378,6 +401,7 @@ export default function BrandingPage() {
           <AdvancedCodeOutput />
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+    </>
   );
 }

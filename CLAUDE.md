@@ -2,8 +2,8 @@
 
 > **Purpose**: This file serves as a comprehensive reference guide for AI-assisted development on the Branding Project. It contains everything needed to understand the codebase structure, patterns, and conventions.
 
-**Last Updated**: 2026-02-05
-**Project Version**: 1.0.0
+**Last Updated**: 2026-02-09
+**Project Version**: 1.1.0
 **Node Version**: 20
 **Framework**: Next.js 16 with App Router
 
@@ -29,11 +29,12 @@
 
 ## Project Overview
 
-**Branding Tools** is a professional Next.js application featuring three powerful web development utilities:
+**Branding Tools** is a professional Next.js application featuring four powerful web development utilities:
 
 1. **Image Converter** - Convert images between PNG/JPEG/WEBP formats with quality control
 2. **SEO Card Validator** - Validate and preview meta tags across social media platforms
 3. **Branding Design System Generator** - Create custom design systems with live preview
+4. **API Tester** - Professional REST API client for testing endpoints with full HTTP support
 
 **Core Philosophy**:
 - Privacy-first (client-side processing where possible)
@@ -92,9 +93,14 @@ Branding Project/
 │   ├── branding/
 │   │   └── page.tsx                  # Branding design system page
 │   │
+│   ├── tools/developer/api-tester/
+│   │   ├── page.tsx                  # API Tester feature page
+│   │   └── layout.tsx                # API Tester metadata & SEO
+│   │
 │   └── api/                          # Server-side API routes
 │       ├── convert-image/route.ts    # Image conversion (Sharp)
-│       └── fetch-meta/route.ts       # Meta tag fetching (Cheerio)
+│       ├── fetch-meta/route.ts       # Meta tag fetching (Cheerio)
+│       └── proxy-request/route.ts    # CORS proxy for API testing
 │
 ├── components/                       # React UI Components
 │   ├── ui/                           # shadcn/ui components (11 total)
@@ -123,12 +129,25 @@ Branding Project/
 │   │   ├── platform-previews.tsx     # 4-tab platform preview
 │   │   └── meta-data-display.tsx     # Meta tags list & validation
 │   │
-│   └── branding/
-│       ├── typography-controls.tsx   # Font & size controls
-│       ├── color-controls.tsx        # Color picker controls
-│       ├── spacing-controls.tsx      # Spacing & border radius
-│       ├── live-preview.tsx          # Real-time design preview
-│       └── code-output.tsx           # CSS output with copy/download
+│   ├── branding/
+│   │   ├── typography-controls.tsx   # Font & size controls
+│   │   ├── color-controls.tsx        # Color picker controls
+│   │   ├── spacing-controls.tsx      # Spacing & border radius
+│   │   ├── live-preview.tsx          # Real-time design preview
+│   │   └── code-output.tsx           # CSS output with copy/download
+│   │
+│   ├── api-tester/
+│   │   ├── request-builder.tsx       # HTTP method & URL input
+│   │   ├── headers-editor.tsx        # Dynamic headers management
+│   │   ├── body-editor.tsx           # Request body (JSON/form/raw)
+│   │   ├── auth-editor.tsx           # Authentication controls
+│   │   ├── response-viewer.tsx       # Formatted response display
+│   │   ├── curl-importer.tsx         # Import cURL commands
+│   │   ├── curl-exporter.tsx         # Export as cURL
+│   │   └── history-panel.tsx         # Request history (last 20)
+│   │
+│   └── developer-tools/
+│       └── api-tester.tsx            # Main API Tester component
 │
 ├── lib/                              # Business Logic & Utilities
 │   ├── utils.ts                      # cn(), formatBytes(), debounce()
@@ -136,9 +155,15 @@ Branding Project/
 │   │   └── client-converter.ts       # Canvas-based image conversion
 │   ├── seo-validator/
 │   │   └── meta-validator.ts         # Meta tag validation & platform logic
-│   └── branding/
-│       ├── presets.ts                # Material, Tailwind, Bootstrap presets
-│       └── css-generator.ts          # CSS template generation
+│   ├── branding/
+│   │   ├── presets.ts                # Material, Tailwind, Bootstrap presets
+│   │   └── css-generator.ts          # CSS template generation
+│   └── api-tester/
+│       ├── validation.ts             # Request & URL validation
+│       ├── curl-parser.ts            # Parse cURL commands
+│       ├── curl-generator.ts         # Generate cURL commands
+│       ├── request-executor.ts       # Execute API requests
+│       └── response-formatter.ts     # Format responses & styling
 │
 ├── stores/                           # Zustand State Management
 │   └── branding-store.ts             # Design system state
@@ -146,7 +171,8 @@ Branding Project/
 ├── types/                            # TypeScript Type Definitions
 │   ├── image.ts                      # ImageFormat, ConversionResult, ImageFile
 │   ├── branding.ts                   # BrandingState, TypographySettings
-│   └── seo.ts                        # MetaTags, MetaValidation
+│   ├── seo.ts                        # MetaTags, MetaValidation
+│   └── api-tester.ts                 # APIRequest, APIResponse, HTTPMethod
 │
 ├── docs/                             # Documentation
 │   ├── ARCHITECTURE.md               # System architecture
@@ -843,6 +869,701 @@ interface BrandingState {
 
 ---
 
+### Feature 4: Professional API Tester & REST Client
+
+**Route**: `/tools/developer/api-tester`
+**Status**: Production Ready ✅
+**Features**: 7 HTTP methods, cURL integration, CORS bypass, history management
+**Storage**: localStorage persistence (last 20 requests)
+
+**What is an API Tester?**
+An API Tester (also called REST Client or HTTP Client) is a tool that allows developers to test API endpoints without writing code. It's essential for:
+- Testing backend APIs during development
+- Debugging API responses
+- Validating request/response formats
+- Testing authentication flows
+- Sharing API examples via cURL commands
+
+**Why use this API Tester?**
+- **No installation required** - runs entirely in your browser
+- **Privacy-focused** - all data stays in your browser (localStorage)
+- **CORS bypass** - built-in proxy for testing restricted APIs
+- **cURL integration** - import/export cURL commands instantly
+- **Request history** - automatically saves your last 20 requests
+- **Professional features** - authentication, custom headers, multiple body types
+
+**Component Hierarchy**:
+```
+APITesterPage (app/tools/developer/api-tester/page.tsx)
+├── Main Component: APITesterTool (384 lines)
+│   ├── State Management (localStorage persistence)
+│   ├── Request validation pipeline
+│   ├── Response formatting & display
+│   └── History management (20 requests max)
+│
+├── Header Section
+│   ├── Title: "API Tester"
+│   ├── History button (shows count badge)
+│   └── Reset button (clear all data)
+│
+├── History Panel (toggleable sidebar)
+│   ├── Last 20 requests with timestamps
+│   ├── Success/failure indicators (✓/✗)
+│   ├── Load previous request button
+│   ├── Delete individual entries
+│   └── Relative timestamps ("5m ago", "2h ago")
+│
+├── cURL Importer (full-width card)
+│   ├── Textarea for pasting cURL commands
+│   ├── Parse & populate button
+│   ├── Success/error feedback messages
+│   └── Supports complex cURL syntax
+│
+└── Two-Column Layout (responsive)
+    │
+    ├── Left Column: Request Builder
+    │   ├── RequestBuilder Component
+    │   │   ├── HTTP Method Selector (7 methods)
+    │   │   │   └── GET | POST | PUT | PATCH | DELETE | HEAD | OPTIONS
+    │   │   ├── URL Input (validated)
+    │   │   ├── Send Request button (with loading state)
+    │   │   └── Keyboard shortcut (Enter key)
+    │   │
+    │   ├── Configuration Tabs (3 tabs)
+    │   │   │
+    │   │   ├── Headers Tab
+    │   │   │   └── HeadersEditor
+    │   │   │       ├── Add/remove header pairs
+    │   │   │       ├── Key + Value inputs
+    │   │   │       ├── Enable/disable toggle per header
+    │   │   │       ├── Header count badge
+    │   │   │       └── Empty state message
+    │   │   │
+    │   │   ├── Body Tab
+    │   │   │   └── BodyEditor (4 body types)
+    │   │   │       ├── None - no request body
+    │   │   │       ├── JSON - JSON editor with validation
+    │   │   │       │   ├── Syntax error alerts
+    │   │   │       │   └── Auto-format option
+    │   │   │       ├── Form Data - key-value pairs
+    │   │   │       │   ├── Add/remove fields
+    │   │   │       │   └── Enable/disable per field
+    │   │   │       └── Raw Text - plain text editor
+    │   │   │
+    │   │   └── Auth Tab
+    │   │       └── AuthEditor (3 auth types)
+    │   │           ├── None - no authentication
+    │   │           ├── Basic Auth
+    │   │           │   ├── Username input
+    │   │           │   ├── Password input
+    │   │           │   └── Auto Base64 encoding
+    │   │           └── Bearer Token
+    │   │               ├── Token input field
+    │   │               └── Authorization header preview
+    │   │
+    │   └── CORS Proxy Toggle
+    │       ├── Enable/disable server proxy
+    │       ├── Explanation tooltip
+    │       └── Use for CORS-restricted APIs
+    │
+    └── Right Column: Response Viewer (sticky positioning)
+        └── ResponseViewer Component
+            ├── Empty State (before first request)
+            │   └── "Send a request to see the response"
+            │
+            ├── Loading State
+            │   └── Spinner + "Sending request..."
+            │
+            ├── Error State
+            │   ├── Alert with error message
+            │   └── CORS suggestion (if applicable)
+            │
+            └── Success State (3 tabs)
+                ├── Response Metadata Badges
+                │   ├── Status Code + Text (color-coded)
+                │   │   └── 2xx (green), 3xx (blue), 4xx (orange), 5xx (red)
+                │   ├── Response Time (milliseconds)
+                │   └── Response Size (bytes, formatted)
+                │
+                ├── Body Tab
+                │   ├── Formatted response body
+                │   │   ├── JSON: Pretty-printed
+                │   │   ├── XML/HTML: Indented
+                │   │   └── Plain text: Raw
+                │   ├── Copy button (with confirmation)
+                │   └── Syntax highlighting
+                │
+                ├── Headers Tab
+                │   ├── All response headers (key-value)
+                │   ├── Alphabetically sorted
+                │   └── Monospace font
+                │
+                └── Export Tab
+                    └── CurlExporter
+                        ├── Generated cURL command
+                        ├── Copy button (with confirmation)
+                        └── Properly escaped values
+```
+
+**Key State** (useState in APITesterTool):
+```typescript
+// Current Request Being Built
+const [request, setRequest] = useState<APIRequest>({
+  id: uuid(),
+  method: "GET",
+  url: "",
+  headers: [],         // Dynamic header pairs
+  body: {
+    type: "none",
+    json: "",
+    formData: [],
+    raw: ""
+  },
+  auth: {
+    type: "none",
+    basic: { username: "", password: "" },
+    bearer: { token: "" }
+  }
+});
+
+// Response & UI State
+const [response, setResponse] = useState<APIResponse | null>(null);
+const [isLoading, setIsLoading] = useState(false);
+const [error, setError] = useState<string | null>(null);
+
+// History & Settings
+const [history, setHistory] = useState<RequestHistory[]>([]);  // Last 20 requests
+const [showHistory, setShowHistory] = useState(false);         // Panel visibility
+const [useProxy, setUseProxy] = useState(false);              // CORS proxy toggle
+```
+
+**HTTP Methods Supported** (7 total):
+1. **GET** - Retrieve data (no body allowed)
+2. **POST** - Create new resources
+3. **PUT** - Update/replace entire resource
+4. **PATCH** - Partial update of resource
+5. **DELETE** - Remove resource
+6. **HEAD** - Get headers only (no body)
+7. **OPTIONS** - Get allowed methods (CORS preflight)
+
+**Body Types** (4 options):
+
+1. **None**
+   - No request body
+   - Used for GET, HEAD, OPTIONS
+   - Automatically selected for GET requests
+
+2. **JSON**
+   - Content-Type: application/json
+   - Syntax validation with error alerts
+   - Pretty-print formatting
+   - Most common for modern APIs
+
+3. **Form Data**
+   - Content-Type: application/x-www-form-urlencoded
+   - Key-value pairs (like HTML forms)
+   - URL-encoded automatically
+   - Enable/disable individual fields
+
+4. **Raw Text**
+   - Content-Type: text/plain
+   - Plain text body
+   - For custom formats (XML, CSV, etc.)
+
+**Authentication Types** (3 options):
+
+1. **None**
+   - No authentication
+   - Public APIs
+
+2. **Basic Auth**
+   - Username + Password
+   - Automatically Base64 encoded
+   - Adds: `Authorization: Basic <encoded>`
+   - Common for legacy APIs
+
+3. **Bearer Token**
+   - Token-based authentication
+   - Adds: `Authorization: Bearer <token>`
+   - Used by most modern APIs (JWT, OAuth)
+
+**cURL Integration** (Import & Export):
+
+**Import cURL Commands**:
+The parser supports complex cURL syntax including:
+- Multiple header flags: `-H` or `--header`
+- Method flags: `-X` or `--request`
+- Data flags: `-d`, `--data`, `--data-raw`, `--data-binary`
+- Auth flags: `-u` or `--user` for Basic Auth
+- Quoted and unquoted values
+- Line breaks and backslash continuation
+- Shell escaping
+
+**Example cURL Import**:
+```bash
+curl -X POST 'https://api.example.com/users' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer eyJhbGc...' \
+  -d '{"name":"John","email":"john@example.com"}'
+```
+
+**Parsed Result**:
+- Method: POST
+- URL: https://api.example.com/users
+- Headers: Content-Type (application/json)
+- Auth: Bearer token (auto-detected)
+- Body: JSON with user data
+
+**Export as cURL**:
+- Generates valid cURL command from current request
+- Properly escapes single quotes in values
+- Multi-line format with backslash continuation
+- Copy to clipboard with one click
+
+**Request History** (localStorage persistence):
+
+**What's Saved**:
+- Last 20 requests (FIFO - oldest removed)
+- Full request details (method, URL, headers, body, auth)
+- Response data (status, headers, body)
+- Timestamp (Unix timestamp)
+- Success/failure flag
+
+**History Features**:
+- **Load Previous Request**: Click to restore a saved request
+- **Delete Entry**: Remove individual history items
+- **Relative Timestamps**: "5m ago", "2h ago", "1d ago"
+- **Visual Indicators**: ✓ (success) or ✗ (error)
+- **Status Display**: Shows status code and response time
+- **Automatic Pruning**: Keeps only 20 most recent
+
+**CORS Proxy** (Bypass CORS restrictions):
+
+**What is CORS?**
+Cross-Origin Resource Sharing (CORS) is a browser security feature that blocks requests to different domains. Many APIs don't allow browser requests due to CORS policies.
+
+**How the Proxy Works**:
+1. **Direct Mode (default)**: Request sent from browser to API
+   - Fast, no server involvement
+   - Blocked by CORS for restricted APIs
+
+2. **Proxy Mode (toggle enabled)**: Request sent through our server
+   - Browser → Our Server → Target API → Our Server → Browser
+   - Bypasses CORS restrictions
+   - 30-second timeout
+   - Adds slight latency
+
+**When to Use Proxy**:
+- API returns CORS error
+- Testing third-party APIs
+- API doesn't set CORS headers
+- Development/testing environments
+
+**Validation System** (3-layer validation):
+
+**Layer 1: URL Validation**
+```typescript
+validateUrl(url: string) {
+  - Must start with http:// or https://
+  - Must be valid URL format
+  - Returns boolean
+}
+```
+
+**Layer 2: JSON Validation** (for JSON body type)
+```typescript
+validateJson(json: string) {
+  - Try-catch JSON.parse()
+  - Returns boolean
+  - Shows error alert in UI
+}
+```
+
+**Layer 3: Complete Request Validation**
+```typescript
+validateRequest(request: APIRequest) {
+  Returns: { isValid: boolean, errors: string[], warnings: string[] }
+
+  Errors (block request):
+  - Invalid URL format
+  - Invalid JSON body (if type is JSON)
+  - Empty URL
+
+  Warnings (show but allow):
+  - GET request with body data
+  - Basic Auth with empty username/password
+  - No Content-Type header for JSON body
+}
+```
+
+**Response Formatting** (Content-Type aware):
+
+**JSON Responses**:
+```typescript
+formatResponseBody(body, "application/json")
+  → Pretty-printed JSON with 2-space indentation
+  → Syntax highlighted (future enhancement)
+```
+
+**XML/HTML Responses**:
+```typescript
+formatResponseBody(body, "text/xml")
+  → Basic indentation
+  → Preserves structure
+```
+
+**Plain Text**:
+```typescript
+formatResponseBody(body, "text/plain")
+  → Raw body content
+  → No formatting
+```
+
+**Status Code Color System**:
+
+| Range | Color | Variant | Meaning | Examples |
+|-------|-------|---------|---------|----------|
+| 2xx | Green | Success | Request succeeded | 200 OK, 201 Created |
+| 3xx | Blue | Secondary | Redirection | 301 Moved, 304 Not Modified |
+| 4xx | Orange | Warning | Client error | 400 Bad Request, 404 Not Found |
+| 5xx | Red | Destructive | Server error | 500 Internal Error, 503 Unavailable |
+
+**Method Color Coding**:
+
+| Method | Color | Typical Use |
+|--------|-------|-------------|
+| GET | Blue | Retrieve data |
+| POST | Green | Create resource |
+| PUT | Orange | Update resource |
+| PATCH | Yellow | Partial update |
+| DELETE | Red | Remove resource |
+| HEAD | Gray | Headers only |
+| OPTIONS | Purple | Allowed methods |
+
+**Request Execution Pipeline**:
+
+```
+User clicks "Send Request"
+  ↓
+1. validateRequest() → Check URL, JSON, headers
+  ↓
+2. If invalid → Show error alerts, stop
+  ↓
+3. If valid → setIsLoading(true)
+  ↓
+4. Build request headers (custom + auth)
+  ↓
+5. Build request body (based on type)
+  ↓
+6. Execute request (direct or proxy mode)
+  ↓
+7. Measure response time (performance.now())
+  ↓
+8. Parse response (status, headers, body)
+  ↓
+9. Format response body (JSON/XML/text)
+  ↓
+10. setResponse(data) + setIsLoading(false)
+  ↓
+11. Save to history (request + response + timestamp)
+  ↓
+12. Update localStorage (persist history)
+  ↓
+13. Display formatted response in UI
+```
+
+**Error Handling**:
+
+| Error Type | Detection | User Message | Suggestion |
+|------------|-----------|--------------|------------|
+| **CORS Error** | `TypeError: Failed to fetch` | "This might be a CORS issue" | "Try enabling the proxy option" |
+| **Timeout** | 30-second timeout | "Request timeout" | Server not responding |
+| **Network Failure** | Fetch rejection | "Network request failed" | Check internet connection |
+| **Invalid URL** | URL validation | "Invalid URL format" | Must use HTTP or HTTPS |
+| **Invalid JSON** | JSON.parse error | "Invalid JSON format" | Shows specific error message |
+| **Server Error** | 5xx status | Status text from server | Check server logs |
+
+**Keyboard Shortcuts**:
+
+| Key | Action | Context |
+|-----|--------|---------|
+| Enter | Send request | When URL input is focused |
+| Escape | Close history panel | When history is open |
+
+**Performance Metrics**:
+
+**Request Timing**:
+```typescript
+const startTime = performance.now();
+await fetch(url, options);
+const endTime = performance.now();
+const duration = endTime - startTime;  // milliseconds
+```
+
+**Response Size**:
+```typescript
+const blob = await response.blob();
+const size = blob.size;  // bytes
+formatBytes(size);  // "1.2 KB", "3.5 MB"
+```
+
+**LocalStorage Structure**:
+
+**Key**: `"api-tester-history"`
+
+**Value** (JSON array):
+```typescript
+[
+  {
+    id: "uuid-1",
+    request: {
+      id: "uuid-1",
+      method: "POST",
+      url: "https://api.example.com/users",
+      headers: [
+        { id: "h1", key: "Content-Type", value: "application/json", enabled: true }
+      ],
+      body: { type: "json", json: '{"name":"John"}' },
+      auth: { type: "bearer", bearer: { token: "abc123" } }
+    },
+    response: {
+      status: 201,
+      statusText: "Created",
+      headers: { "content-type": "application/json" },
+      body: '{"id":123,"name":"John"}',
+      size: 45,
+      time: 234  // milliseconds
+    },
+    timestamp: 1707426789123,
+    success: true
+  },
+  // ... up to 19 more requests
+]
+```
+
+**Data Flow Examples**:
+
+**Example 1: Simple GET Request**
+```
+User enters: https://api.github.com/users/octocat
+Method: GET (default)
+Headers: none
+Auth: none
+  ↓
+Click "Send Request"
+  ↓
+Validation passes (valid URL)
+  ↓
+fetch("https://api.github.com/users/octocat", { method: "GET" })
+  ↓
+Response: 200 OK (156ms, 1.2 KB)
+  ↓
+Body formatted as JSON (pretty-print)
+  ↓
+Display: Status badge (green "200 OK"), Time (156ms), Size (1.2 KB)
+  ↓
+Save to history with timestamp
+```
+
+**Example 2: POST with JSON + Bearer Auth**
+```
+User builds request:
+  URL: https://api.example.com/posts
+  Method: POST
+  Headers: none
+  Body Type: JSON
+  Body: {"title":"Hello","content":"World"}
+  Auth: Bearer token → "secret123"
+  ↓
+Click "Send Request"
+  ↓
+Validation passes
+  ↓
+Build headers:
+  - Content-Type: application/json (auto-added)
+  - Authorization: Bearer secret123 (from auth)
+  ↓
+fetch(url, {
+  method: "POST",
+  headers: { ... },
+  body: '{"title":"Hello","content":"World"}'
+})
+  ↓
+Response: 201 Created (423ms, 234 bytes)
+  ↓
+Display + Save to history
+```
+
+**Example 3: CORS Error → Proxy Mode**
+```
+User: https://restricted-api.com/data
+Method: GET
+Proxy: OFF (direct mode)
+  ↓
+fetch() → TypeError: Failed to fetch
+  ↓
+Error detected as CORS
+  ↓
+Display: "This might be a CORS issue. Try enabling the proxy option."
+  ↓
+User enables proxy toggle
+  ↓
+Click "Send Request" again
+  ↓
+Request sent to: POST /api/proxy-request
+Body: { method: "GET", url: "https://restricted-api.com/data", ... }
+  ↓
+Server fetches the API (no CORS restrictions)
+  ↓
+Server returns: { status, statusText, headers, body }
+  ↓
+Success! Data displayed
+```
+
+**Advanced Features**:
+
+1. **Dynamic Header Management**
+   - Add unlimited headers
+   - Toggle headers on/off without deleting
+   - Automatic header count badge
+   - Empty state guidance
+
+2. **Smart Content-Type**
+   - Auto-adds for JSON body
+   - Respects custom Content-Type header
+   - URL-encodes form data
+
+3. **Request Cloning**
+   - Load from history = instant clone
+   - Modify and re-send easily
+   - Great for iterative testing
+
+4. **Response Inspection**
+   - Full header visibility
+   - Formatted body (JSON/XML)
+   - Copy response body
+   - Export as cURL
+
+5. **Error Recovery**
+   - Graceful error handling
+   - CORS detection & suggestion
+   - Timeout handling (30s)
+   - Network failure guidance
+
+**Use Cases & Examples**:
+
+**Use Case 1: Testing a Public API**
+```
+Scenario: Test GitHub API to get user info
+Steps:
+1. Enter URL: https://api.github.com/users/octocat
+2. Method: GET (default)
+3. Click "Send Request"
+Result: See user data in formatted JSON
+```
+
+**Use Case 2: Creating a Resource with Auth**
+```
+Scenario: Create a new blog post
+Steps:
+1. URL: https://my-api.com/posts
+2. Method: POST
+3. Auth Tab: Bearer Token → paste your token
+4. Body Tab: Select JSON, paste:
+   {"title": "My Post", "content": "Hello World"}
+5. Click "Send Request"
+Result: 201 Created with new post ID
+```
+
+**Use Case 3: Testing Form Submission**
+```
+Scenario: Submit a contact form
+Steps:
+1. URL: https://example.com/contact
+2. Method: POST
+3. Body Tab: Select "Form Data"
+4. Add fields:
+   - name: John Doe
+   - email: john@example.com
+   - message: Hello!
+5. Click "Send Request"
+Result: Form data sent as URL-encoded
+```
+
+**Use Case 4: Import & Modify cURL**
+```
+Scenario: Got a cURL from API docs, need to test
+Steps:
+1. Copy cURL from documentation
+2. Paste in cURL Importer
+3. Click "Import"
+Result: All fields auto-populated
+4. Modify URL or body as needed
+5. Click "Send Request"
+Result: Test with your changes
+```
+
+**Use Case 5: Testing CORS-Restricted API**
+```
+Scenario: API blocks browser requests
+Steps:
+1. Enter API URL
+2. Try sending → CORS error appears
+3. Enable "Use Proxy" toggle
+4. Click "Send Request" again
+Result: Success via server proxy
+```
+
+**Best Practices**:
+
+1. **Testing APIs**
+   - Start with GET requests to understand data structure
+   - Use Bearer auth for modern APIs
+   - Check response status codes carefully
+   - Save successful requests to history
+
+2. **Debugging**
+   - Check Headers tab for debugging info
+   - Look for error messages in response body
+   - Verify Content-Type matches body type
+   - Use proxy for CORS issues
+
+3. **Security**
+   - Never share API keys publicly
+   - Clear history before screenshots
+   - Use environment variables for sensitive data (future feature)
+   - Be aware localStorage is not encrypted
+
+4. **Performance**
+   - Use direct mode when possible (faster)
+   - Monitor response times
+   - Check response sizes
+   - Test with small payloads first
+
+**Limitations & Known Issues**:
+
+1. **File Uploads**: Not supported yet (binary data)
+2. **WebSocket**: Only HTTP/HTTPS supported
+3. **Streaming**: Doesn't support streaming responses
+4. **Large Responses**: May slow down for very large responses (>10MB)
+5. **History Limit**: Only 20 requests saved
+6. **localStorage**: Limited to ~5-10MB depending on browser
+
+**Future Enhancements** (Planned):
+
+1. Environment variables for API keys
+2. Request collections/folders
+3. Pre-request scripts
+4. Response assertions
+5. File upload support
+6. Export history as Postman collection
+7. Syntax highlighting for response body
+8. GraphQL support
+9. WebSocket testing
+10. Bulk request testing
+
+---
+
 ## State Management
 
 ### Zustand Store (Branding Feature)
@@ -920,6 +1641,25 @@ setColor("primary", "#3b82f6");
 - Fetched meta tags
 - Loading state
 - Error messages
+
+**API Tester** uses `useState` for:
+- Current API request (method, URL, headers, body, auth)
+- Response data (status, headers, body, timing)
+- Loading state
+- Error messages
+- Request history (last 20 requests)
+- UI state (history panel visibility, proxy toggle)
+
+**Why localStorage?**
+The API Tester persists request history to localStorage for:
+- Automatic history saving across sessions
+- No server/database required
+- Privacy (data stays in browser)
+- Fast access
+- Simple implementation
+
+**localStorage Key**: `"api-tester-history"`
+**Max Entries**: 20 requests (FIFO - oldest removed)
 
 ---
 
@@ -1067,6 +1807,160 @@ export async function POST(request: NextRequest) {
 - User-Agent header for better compatibility
 - Combines Metascraper + manual extraction
 - Handles missing/optional fields
+
+---
+
+### POST /api/proxy-request
+
+**Purpose**: CORS proxy for API testing - bypasses browser CORS restrictions
+
+**What is this for?**
+When testing APIs from a browser, you often encounter CORS (Cross-Origin Resource Sharing) errors. This happens when an API doesn't allow requests from web browsers. This proxy endpoint solves that problem by making the request from our server instead of directly from the browser.
+
+**Request**:
+```typescript
+Content-Type: application/json
+{
+  "method": "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS",
+  "url": "https://example.com/api/endpoint",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer token123",
+    // ... any custom headers
+  },
+  "body": "optional request body as string"
+}
+```
+
+**Response**:
+```typescript
+{
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "application/json",
+    "content-length": "1234",
+    // ... all response headers
+  },
+  "body": "response body as string"
+}
+```
+
+**Implementation** (`app/api/proxy-request/route.ts`):
+```typescript
+export async function POST(request: NextRequest) {
+  try {
+    // Parse incoming request
+    const { method, url, headers = {}, body } = await request.json();
+
+    // Validate HTTP method
+    const validMethods = ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"];
+    if (!validMethods.includes(method)) {
+      return NextResponse.json(
+        { error: `Invalid HTTP method: ${method}` },
+        { status: 400 }
+      );
+    }
+
+    // Validate URL
+    try {
+      new URL(url);
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid URL format" },
+        { status: 400 }
+      );
+    }
+
+    // Set up timeout (30 seconds)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+    try {
+      // Execute the proxied request
+      const response = await fetch(url, {
+        method,
+        headers: headers as HeadersInit,
+        body: method !== "GET" && method !== "HEAD" ? body : undefined,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      // Extract response headers
+      const responseHeaders: Record<string, string> = {};
+      response.headers.forEach((value, key) => {
+        responseHeaders[key] = value;
+      });
+
+      // Get response body
+      const responseBody = await response.text();
+
+      // Return proxied response
+      return NextResponse.json({
+        status: response.status,
+        statusText: response.statusText,
+        headers: responseHeaders,
+        body: responseBody,
+      });
+
+    } catch (fetchError: any) {
+      clearTimeout(timeoutId);
+
+      // Handle timeout
+      if (fetchError.name === "AbortError") {
+        return NextResponse.json(
+          { error: "Request timeout (30 seconds)" },
+          { status: 408 }
+        );
+      }
+
+      // Handle other fetch errors
+      return NextResponse.json(
+        { error: fetchError.message || "Network request failed" },
+        { status: 500 }
+      );
+    }
+
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message || "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+**Features**:
+- **CORS Bypass**: Makes requests from server, avoiding browser CORS restrictions
+- **30-second Timeout**: Prevents hanging requests
+- **All HTTP Methods**: Supports GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
+- **Header Forwarding**: Passes all custom headers to target API
+- **Body Support**: Forwards request body for POST/PUT/PATCH
+- **Error Handling**: Graceful timeout and network error handling
+- **Validation**: Validates HTTP method and URL format
+
+**When to Use**:
+- Testing third-party APIs that don't allow browser requests
+- APIs without CORS headers
+- Development/testing environments
+- When you see "CORS policy" errors in browser console
+
+**Security Considerations**:
+- Only use for development/testing
+- Don't expose sensitive API keys
+- Consider rate limiting in production
+- Validate URLs to prevent abuse
+
+**Error Responses**:
+
+| Status | Error | Cause |
+|--------|-------|-------|
+| 400 | Invalid HTTP method | Method not in allowed list |
+| 400 | Invalid URL format | URL validation failed |
+| 408 | Request timeout | Target API took >30 seconds |
+| 500 | Network request failed | Fetch error (DNS, network) |
+| 500 | Internal server error | Unexpected server error |
 
 ---
 
@@ -1332,6 +2226,222 @@ export interface MetaValidation {
 }
 
 export type Platform = "facebook" | "twitter" | "discord" | "reddit";
+```
+
+---
+
+### API Tester Types (`types/api-tester.ts`)
+
+```typescript
+// ============================================
+// HTTP METHODS
+// ============================================
+export type HTTPMethod =
+  | "GET"      // Retrieve data
+  | "POST"     // Create new resource
+  | "PUT"      // Update/replace resource
+  | "PATCH"    // Partial update
+  | "DELETE"   // Remove resource
+  | "HEAD"     // Get headers only
+  | "OPTIONS"; // Get allowed methods (CORS preflight)
+
+// ============================================
+// BODY TYPES
+// ============================================
+export type BodyType =
+  | "none"       // No request body
+  | "json"       // JSON data (application/json)
+  | "form-data"  // Form data (application/x-www-form-urlencoded)
+  | "raw";       // Plain text (text/plain)
+
+// ============================================
+// AUTHENTICATION TYPES
+// ============================================
+export type AuthType =
+  | "none"   // No authentication
+  | "basic"  // Basic Auth (username:password, Base64 encoded)
+  | "bearer"; // Bearer token (JWT, OAuth)
+
+// ============================================
+// DATA STRUCTURES
+// ============================================
+
+// Header key-value pair
+export interface HeaderPair {
+  id: string;          // Unique identifier (UUID)
+  key: string;         // Header name (e.g., "Content-Type")
+  value: string;       // Header value (e.g., "application/json")
+  enabled: boolean;    // Whether to include in request
+}
+
+// Form data key-value pair
+export interface FormDataPair {
+  id: string;          // Unique identifier (UUID)
+  key: string;         // Field name (e.g., "username")
+  value: string;       // Field value (e.g., "john")
+  enabled: boolean;    // Whether to include in request
+}
+
+// Basic authentication credentials
+export interface BasicAuth {
+  username: string;    // Username for Basic Auth
+  password: string;    // Password for Basic Auth
+  // Note: Automatically Base64 encoded when sent
+}
+
+// Bearer token authentication
+export interface BearerAuth {
+  token: string;       // Bearer token (JWT, OAuth, etc.)
+}
+
+// Authentication configuration
+export interface AuthConfig {
+  type: AuthType;      // Authentication method
+  basic?: BasicAuth;   // Basic auth credentials (if type === "basic")
+  bearer?: BearerAuth; // Bearer token (if type === "bearer")
+}
+
+// Request body configuration
+export interface RequestBody {
+  type: BodyType;              // Body format
+  json?: string;               // JSON string (if type === "json")
+  formData?: FormDataPair[];   // Form fields (if type === "form-data")
+  raw?: string;                // Plain text (if type === "raw")
+}
+
+// Complete API request
+export interface APIRequest {
+  id: string;           // Unique identifier (UUID)
+  method: HTTPMethod;   // HTTP method
+  url: string;          // Target URL
+  headers: HeaderPair[]; // Custom headers
+  body: RequestBody;    // Request body
+  auth: AuthConfig;     // Authentication
+}
+
+// API response
+export interface APIResponse {
+  status: number;                    // HTTP status code (200, 404, etc.)
+  statusText: string;                // Status text ("OK", "Not Found", etc.)
+  headers: Record<string, string>;   // Response headers
+  body: string;                      // Response body (as string)
+  size: number;                      // Response size in bytes
+  time: number;                      // Request duration in milliseconds
+}
+
+// Request history entry
+export interface RequestHistory {
+  id: string;              // Unique identifier (UUID)
+  request: APIRequest;     // The request that was sent
+  response?: APIResponse;  // The response received (undefined if failed)
+  timestamp: number;       // Unix timestamp (milliseconds)
+  success: boolean;        // Whether request succeeded
+}
+
+// cURL parsing result
+export interface CurlParseResult {
+  method?: HTTPMethod;     // Extracted HTTP method
+  url?: string;            // Extracted URL
+  headers?: HeaderPair[];  // Extracted headers
+  body?: RequestBody;      // Extracted body
+  auth?: AuthConfig;       // Extracted authentication
+}
+
+// Validation result
+export interface ValidationResult {
+  isValid: boolean;        // Overall validity
+  errors: string[];        // Blocking errors (prevent request)
+  warnings: string[];      // Non-blocking warnings (show but allow)
+}
+```
+
+**Type Usage Examples**:
+
+**Creating a GET Request**:
+```typescript
+const getRequest: APIRequest = {
+  id: "uuid-123",
+  method: "GET",
+  url: "https://api.example.com/users",
+  headers: [
+    { id: "h1", key: "Accept", value: "application/json", enabled: true }
+  ],
+  body: { type: "none" },
+  auth: { type: "none" }
+};
+```
+
+**Creating a POST Request with JSON**:
+```typescript
+const postRequest: APIRequest = {
+  id: "uuid-456",
+  method: "POST",
+  url: "https://api.example.com/users",
+  headers: [
+    { id: "h1", key: "Content-Type", value: "application/json", enabled: true }
+  ],
+  body: {
+    type: "json",
+    json: '{"name":"John","email":"john@example.com"}'
+  },
+  auth: {
+    type: "bearer",
+    bearer: { token: "eyJhbGciOiJIUzI1NiIsInR5..." }
+  }
+};
+```
+
+**Creating a Form Data Request**:
+```typescript
+const formRequest: APIRequest = {
+  id: "uuid-789",
+  method: "POST",
+  url: "https://example.com/contact",
+  headers: [],
+  body: {
+    type: "form-data",
+    formData: [
+      { id: "f1", key: "name", value: "John Doe", enabled: true },
+      { id: "f2", key: "email", value: "john@example.com", enabled: true },
+      { id: "f3", key: "message", value: "Hello!", enabled: true }
+    ]
+  },
+  auth: { type: "none" }
+};
+```
+
+**Handling Response**:
+```typescript
+const response: APIResponse = {
+  status: 200,
+  statusText: "OK",
+  headers: {
+    "content-type": "application/json",
+    "content-length": "1234"
+  },
+  body: '{"id":123,"name":"John"}',
+  size: 1234,
+  time: 456
+};
+
+// Check success
+if (response.status >= 200 && response.status < 300) {
+  console.log("Success!");
+}
+```
+
+**Saving to History**:
+```typescript
+const historyEntry: RequestHistory = {
+  id: "history-1",
+  request: myRequest,
+  response: myResponse,
+  timestamp: Date.now(),
+  success: true
+};
+
+// Add to history array
+const history: RequestHistory[] = [historyEntry, ...previousHistory].slice(0, 20);
 ```
 
 ---
@@ -1676,6 +2786,594 @@ export const presets: Record<PresetName, BrandingState> = {
 
 ---
 
+### API Tester Utilities
+
+#### Validation Utilities (`lib/api-tester/validation.ts`)
+
+**validateRequest() - Complete Request Validation**
+```typescript
+export function validateRequest(request: APIRequest): ValidationResult {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+
+  // Validate URL
+  if (!request.url.trim()) {
+    errors.push("URL is required");
+  } else if (!validateUrl(request.url)) {
+    errors.push("Invalid URL format. Must use HTTP or HTTPS protocol");
+  }
+
+  // Validate JSON body
+  if (request.body.type === "json" && request.body.json) {
+    if (!validateJson(request.body.json)) {
+      errors.push("Invalid JSON format in request body");
+    }
+  }
+
+  // Warnings for common issues
+  if (request.method === "GET" && request.body.type !== "none") {
+    warnings.push("GET requests typically don't have a body");
+  }
+
+  if (request.auth.type === "basic") {
+    if (!request.auth.basic?.username || !request.auth.basic?.password) {
+      warnings.push("Basic auth credentials are incomplete");
+    }
+  }
+
+  if (request.body.type === "json" && !request.headers.some(h =>
+    h.enabled && h.key.toLowerCase() === "content-type"
+  )) {
+    warnings.push("Consider adding Content-Type: application/json header");
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+    warnings,
+  };
+}
+```
+**Purpose**: Validates entire request before sending
+**Returns**: { isValid, errors[], warnings[] }
+**Usage**: Called before executing request to prevent invalid API calls
+
+**validateUrl() - URL Format Validation**
+```typescript
+export function validateUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+```
+**Purpose**: Ensures URL is valid HTTP/HTTPS format
+**Usage**: Used in request validation
+
+**validateJson() - JSON Format Validation**
+```typescript
+export function validateJson(json: string): boolean {
+  try {
+    JSON.parse(json);
+    return true;
+  } catch {
+    return false;
+  }
+}
+```
+**Purpose**: Checks if string is valid JSON
+**Usage**: Validates JSON body before sending request
+
+---
+
+#### cURL Parser (`lib/api-tester/curl-parser.ts`)
+
+**parseCurlCommand() - Parse cURL Commands**
+```typescript
+export function parseCurlCommand(curlCommand: string): CurlParseResult {
+  // Initialize result
+  const result: CurlParseResult = {
+    method: undefined,
+    url: undefined,
+    headers: [],
+    body: undefined,
+    auth: undefined,
+  };
+
+  // Clean up command (remove line breaks, extra spaces)
+  const cleaned = curlCommand
+    .replace(/\\\n/g, " ")     // Remove backslash line breaks
+    .replace(/\s+/g, " ")       // Normalize whitespace
+    .trim();
+
+  // Extract URL (quoted or unquoted)
+  const urlMatch = cleaned.match(/curl\s+['"]?([^'"}\s]+)['"]?/) ||
+                   cleaned.match(/curl\s+([^\s]+)/);
+  if (urlMatch) {
+    result.url = urlMatch[1].replace(/['"]/g, "");
+  }
+
+  // Extract method (-X or --request)
+  const methodMatch = cleaned.match(/(?:-X|--request)\s+['"]?(\w+)['"]?/);
+  if (methodMatch) {
+    result.method = methodMatch[1].toUpperCase() as HTTPMethod;
+  }
+
+  // Extract headers (-H or --header)
+  const headerRegex = /(?:-H|--header)\s+['"]([^'"]+)['"]/g;
+  let headerMatch;
+  const headers: HeaderPair[] = [];
+
+  while ((headerMatch = headerRegex.exec(cleaned)) !== null) {
+    const headerValue = headerMatch[1];
+    const colonIndex = headerValue.indexOf(":");
+
+    if (colonIndex > -1) {
+      const key = headerValue.substring(0, colonIndex).trim();
+      const value = headerValue.substring(colonIndex + 1).trim();
+
+      // Check if this is an Authorization header
+      if (key.toLowerCase() === "authorization") {
+        // Extract auth type
+        if (value.startsWith("Bearer ")) {
+          result.auth = {
+            type: "bearer",
+            bearer: { token: value.substring(7) }
+          };
+        } else if (value.startsWith("Basic ")) {
+          // Decode Basic auth
+          const decoded = atob(value.substring(6));
+          const [username, password] = decoded.split(":");
+          result.auth = {
+            type: "basic",
+            basic: { username, password }
+          };
+        }
+      } else {
+        headers.push({
+          id: crypto.randomUUID(),
+          key,
+          value,
+          enabled: true
+        });
+      }
+    }
+  }
+
+  result.headers = headers;
+
+  // Extract body (-d, --data, --data-raw, --data-binary)
+  const bodyMatch = cleaned.match(/(?:-d|--data|--data-raw|--data-binary)\s+['"]([^'"]+)['"]/);
+  if (bodyMatch) {
+    const bodyContent = bodyMatch[1];
+
+    // Try to parse as JSON
+    try {
+      JSON.parse(bodyContent);
+      result.body = {
+        type: "json",
+        json: bodyContent
+      };
+    } catch {
+      // If not JSON, treat as raw
+      result.body = {
+        type: "raw",
+        raw: bodyContent
+      };
+    }
+  }
+
+  // Extract Basic auth from -u flag
+  const userMatch = cleaned.match(/(?:-u|--user)\s+['"]?([^'"}\s]+)['"]?/);
+  if (userMatch && !result.auth) {
+    const [username, password] = userMatch[1].split(":");
+    result.auth = {
+      type: "basic",
+      basic: { username, password: password || "" }
+    };
+  }
+
+  return result;
+}
+```
+**Purpose**: Parses complex cURL commands into request structure
+**Supports**:
+- Multiple header syntaxes (-H, --header)
+- Method flags (-X, --request)
+- Data flags (-d, --data, --data-raw, --data-binary)
+- Auth flags (-u, --user)
+- Quoted and unquoted values
+- Line breaks with backslash
+- Base64 encoded Basic auth
+
+**Usage Example**:
+```typescript
+const curl = `curl -X POST 'https://api.example.com/users' \\
+  -H 'Authorization: Bearer token123' \\
+  -H 'Content-Type: application/json' \\
+  -d '{"name":"John"}'`;
+
+const parsed = parseCurlCommand(curl);
+// Result:
+// {
+//   method: "POST",
+//   url: "https://api.example.com/users",
+//   headers: [{ key: "Content-Type", value: "application/json", ... }],
+//   body: { type: "json", json: '{"name":"John"}' },
+//   auth: { type: "bearer", bearer: { token: "token123" } }
+// }
+```
+
+---
+
+#### cURL Generator (`lib/api-tester/curl-generator.ts`)
+
+**generateCurlCommand() - Generate cURL from Request**
+```typescript
+export function generateCurlCommand(request: APIRequest): string {
+  const parts: string[] = ["curl"];
+
+  // Add method (skip if GET)
+  if (request.method !== "GET") {
+    parts.push(`-X ${request.method}`);
+  }
+
+  // Add URL (with quotes)
+  parts.push(`'${request.url}'`);
+
+  // Build headers (custom + auth)
+  const headers = buildHeadersForCurl(request);
+
+  Object.entries(headers).forEach(([key, value]) => {
+    // Escape single quotes in header values
+    const escapedValue = value.replace(/'/g, "\\'");
+    parts.push(`-H '${key}: ${escapedValue}'`);
+  });
+
+  // Add body (if applicable and present)
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    if (request.body.type === "json" && request.body.json) {
+      const escapedJson = request.body.json.replace(/'/g, "\\'");
+      parts.push(`-d '${escapedJson}'`);
+    } else if (request.body.type === "form-data" && request.body.formData) {
+      const formData = request.body.formData
+        .filter(pair => pair.enabled)
+        .map(pair => `${encodeURIComponent(pair.key)}=${encodeURIComponent(pair.value)}`)
+        .join("&");
+      if (formData) {
+        parts.push(`-d '${formData}'`);
+      }
+    } else if (request.body.type === "raw" && request.body.raw) {
+      const escapedRaw = request.body.raw.replace(/'/g, "\\'");
+      parts.push(`-d '${escapedRaw}'`);
+    }
+  }
+
+  // Join with backslash line breaks for readability
+  return parts.join(" \\\n  ");
+}
+```
+**Purpose**: Converts APIRequest to valid cURL command
+**Features**:
+- Escapes single quotes in values
+- Multi-line format with backslash continuation
+- Includes method, URL, headers, body
+- Handles all body types (JSON, form, raw)
+
+**buildHeadersForCurl() - Build Headers including Auth**
+```typescript
+export function buildHeadersForCurl(request: APIRequest): Record<string, string> {
+  const headers: Record<string, string> = {};
+
+  // Add custom headers
+  request.headers
+    .filter(h => h.enabled)
+    .forEach(h => {
+      headers[h.key] = h.value;
+    });
+
+  // Add auth header
+  if (request.auth.type === "bearer" && request.auth.bearer?.token) {
+    headers["Authorization"] = `Bearer ${request.auth.bearer.token}`;
+  } else if (request.auth.type === "basic" && request.auth.basic) {
+    const { username, password } = request.auth.basic;
+    const encoded = btoa(`${username}:${password}`);
+    headers["Authorization"] = `Basic ${encoded}`;
+  }
+
+  // Auto-add Content-Type for JSON
+  if (request.body.type === "json" && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  return headers;
+}
+```
+**Purpose**: Merges custom headers with auto-generated headers (auth, content-type)
+
+**Usage Example**:
+```typescript
+const request: APIRequest = {
+  method: "POST",
+  url: "https://api.example.com/users",
+  headers: [{ key: "Accept", value: "application/json", enabled: true }],
+  body: { type: "json", json: '{"name":"John"}' },
+  auth: { type: "bearer", bearer: { token: "abc123" } }
+};
+
+const curl = generateCurlCommand(request);
+// Result:
+// curl -X POST \
+//   'https://api.example.com/users' \
+//   -H 'Accept: application/json' \
+//   -H 'Authorization: Bearer abc123' \
+//   -H 'Content-Type: application/json' \
+//   -d '{"name":"John"}'
+```
+
+---
+
+#### Request Executor (`lib/api-tester/request-executor.ts`)
+
+**executeRequest() - Execute API Request**
+```typescript
+export async function executeRequest(
+  request: APIRequest,
+  useProxy: boolean = false
+): Promise<APIResponse> {
+  const startTime = performance.now();
+
+  try {
+    let response: Response;
+
+    if (useProxy) {
+      // Use server proxy
+      response = await fetch("/api/proxy-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          method: request.method,
+          url: request.url,
+          headers: buildHeaders(request),
+          body: buildBody(request),
+        }),
+      });
+
+      // Parse proxy response
+      const proxyData = await response.json();
+
+      if (response.ok) {
+        const endTime = performance.now();
+        return {
+          status: proxyData.status,
+          statusText: proxyData.statusText,
+          headers: proxyData.headers,
+          body: proxyData.body,
+          size: new Blob([proxyData.body]).size,
+          time: Math.round(endTime - startTime),
+        };
+      } else {
+        throw new Error(proxyData.error || "Proxy request failed");
+      }
+    } else {
+      // Direct fetch
+      response = await fetch(request.url, {
+        method: request.method,
+        headers: buildHeaders(request),
+        body: buildBody(request),
+      });
+
+      // Parse response
+      const responseHeaders: Record<string, string> = {};
+      response.headers.forEach((value, key) => {
+        responseHeaders[key] = value;
+      });
+
+      const responseBody = await response.text();
+      const endTime = performance.now();
+
+      return {
+        status: response.status,
+        statusText: response.statusText,
+        headers: responseHeaders,
+        body: responseBody,
+        size: new Blob([responseBody]).size,
+        time: Math.round(endTime - startTime),
+      };
+    }
+  } catch (error: any) {
+    const endTime = performance.now();
+
+    // Detect CORS error
+    if (error.message.includes("Failed to fetch")) {
+      throw new Error(
+        "Request failed. This might be a CORS issue. Try enabling the proxy option."
+      );
+    }
+
+    throw new Error(error.message || "Network request failed");
+  }
+}
+```
+**Purpose**: Executes API request with optional proxy
+**Features**:
+- Two modes: direct fetch or server proxy
+- Measures request time (performance.now())
+- Captures full response (status, headers, body, size)
+- CORS error detection & suggestion
+- Error handling
+
+**buildHeaders() - Build Request Headers**
+```typescript
+export function buildHeaders(request: APIRequest): Record<string, string> {
+  const headers: Record<string, string> = {};
+
+  // Add enabled custom headers
+  request.headers
+    .filter(h => h.enabled && h.key && h.value)
+    .forEach(h => {
+      headers[h.key] = h.value;
+    });
+
+  // Add Authorization header
+  if (request.auth.type === "bearer" && request.auth.bearer?.token) {
+    headers["Authorization"] = `Bearer ${request.auth.bearer.token}`;
+  } else if (request.auth.type === "basic" && request.auth.basic) {
+    const { username, password } = request.auth.basic;
+    const encoded = btoa(`${username}:${password}`);
+    headers["Authorization"] = `Basic ${encoded}`;
+  }
+
+  // Auto-add Content-Type for JSON
+  if (request.body.type === "json" && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  } else if (request.body.type === "form-data" && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/x-www-form-urlencoded";
+  }
+
+  return headers;
+}
+```
+**Purpose**: Builds complete headers including auth and content-type
+
+**buildBody() - Build Request Body**
+```typescript
+export function buildBody(request: APIRequest): string | undefined {
+  // No body for GET/HEAD
+  if (request.method === "GET" || request.method === "HEAD") {
+    return undefined;
+  }
+
+  if (request.body.type === "json") {
+    return request.body.json || undefined;
+  } else if (request.body.type === "form-data" && request.body.formData) {
+    const params = new URLSearchParams();
+    request.body.formData
+      .filter(pair => pair.enabled && pair.key)
+      .forEach(pair => {
+        params.append(pair.key, pair.value);
+      });
+    return params.toString();
+  } else if (request.body.type === "raw") {
+    return request.body.raw || undefined;
+  }
+
+  return undefined;
+}
+```
+**Purpose**: Formats body based on type (JSON, form, raw)
+**Features**:
+- Skips body for GET/HEAD requests
+- URL-encodes form data
+- Returns raw JSON/text as-is
+
+---
+
+#### Response Formatter (`lib/api-tester/response-formatter.ts`)
+
+**formatResponseBody() - Format Response for Display**
+```typescript
+export function formatResponseBody(body: string, contentType?: string): string {
+  if (!contentType) return body;
+
+  // JSON formatting
+  if (contentType.includes("application/json")) {
+    try {
+      const parsed = JSON.parse(body);
+      return JSON.stringify(parsed, null, 2);  // Pretty-print with 2-space indent
+    } catch {
+      return body;  // Return raw if invalid JSON
+    }
+  }
+
+  // XML/HTML formatting
+  if (contentType.includes("xml") || contentType.includes("html")) {
+    return formatXML(body);
+  }
+
+  // Default: return as-is
+  return body;
+}
+```
+**Purpose**: Formats response body based on content-type
+**Supports**: JSON (pretty-print), XML/HTML (indent), plain text
+
+**formatXML() - Basic XML Indentation**
+```typescript
+export function formatXML(xml: string): string {
+  const PADDING = "  ";
+  let formatted = "";
+  let indent = 0;
+
+  xml.split(/>\s*</).forEach((node) => {
+    if (node.match(/^\/\w/)) indent--; // Closing tag
+    formatted += PADDING.repeat(indent) + "<" + node + ">\n";
+    if (node.match(/^<?\w[^>]*[^\/]$/)) indent++; // Opening tag
+  });
+
+  return formatted.trim();
+}
+```
+
+**Color & Styling Utilities**:
+
+```typescript
+// Status badge color based on HTTP status code
+export function getStatusBadgeColor(status: number): string {
+  if (status >= 200 && status < 300) return "bg-green-100 text-green-800";
+  if (status >= 300 && status < 400) return "bg-blue-100 text-blue-800";
+  if (status >= 400 && status < 500) return "bg-orange-100 text-orange-800";
+  if (status >= 500) return "bg-red-100 text-red-800";
+  return "bg-gray-100 text-gray-800";
+}
+
+// Status text color
+export function getStatusColor(status: number): string {
+  if (status >= 200 && status < 300) return "text-green-600";
+  if (status >= 300 && status < 400) return "text-blue-600";
+  if (status >= 400 && status < 500) return "text-orange-600";
+  if (status >= 500) return "text-red-600";
+  return "text-gray-600";
+}
+
+// Button variant for status
+export function getStatusVariant(status: number): "default" | "destructive" | "secondary" {
+  if (status >= 200 && status < 300) return "default";
+  if (status >= 400) return "destructive";
+  return "secondary";
+}
+
+// HTTP method color coding
+export function getMethodColor(method: HTTPMethod): string {
+  const colors: Record<HTTPMethod, string> = {
+    GET: "bg-blue-100 text-blue-800",
+    POST: "bg-green-100 text-green-800",
+    PUT: "bg-orange-100 text-orange-800",
+    PATCH: "bg-yellow-100 text-yellow-800",
+    DELETE: "bg-red-100 text-red-800",
+    HEAD: "bg-gray-100 text-gray-800",
+    OPTIONS: "bg-purple-100 text-purple-800",
+  };
+  return colors[method] || "bg-gray-100 text-gray-800";
+}
+
+// Status emoji
+export function getStatusEmoji(status: number): string {
+  if (status >= 200 && status < 300) return "✓";  // Success
+  if (status >= 300 && status < 400) return "↗";  // Redirect
+  if (status >= 400 && status < 500) return "⚠";  // Client error
+  if (status >= 500) return "✗";                  // Server error
+  return "•";
+}
+```
+
+**Purpose**: Provides consistent color coding and styling for status codes and HTTP methods
+**Usage**: Used throughout ResponseViewer and HistoryPanel components
+
+---
+
 ## Naming Conventions
 
 ### File Naming
@@ -1923,13 +3621,31 @@ export const useStore = create<StoreState>((set) => ({
 
 ## Project Statistics
 
-- **Total TypeScript Files**: 50+ components, utilities, and pages
+- **Total TypeScript Files**: 70+ components, utilities, and pages
 - **UI Components**: 11 shadcn/ui components
-- **Feature Pages**: 3 main features
-- **API Routes**: 2 active endpoints
-- **State Stores**: 1 Zustand store
-- **Type Definitions**: 3 feature-specific type files
+- **Feature Pages**: 4 main features (Image Converter, SEO Validator, Branding Design System, API Tester)
+- **API Routes**: 3 active endpoints (image conversion, meta fetching, CORS proxy)
+- **State Stores**: 1 Zustand store (Branding)
+- **Type Definitions**: 4 feature-specific type files
+- **Feature Components**:
+  - Image Converter: 3 components
+  - SEO Validator: 2 components
+  - Branding: 5 components
+  - API Tester: 8 components
+- **Utility Modules**:
+  - Core: 1 module (utils.ts)
+  - Image Converter: 1 module
+  - SEO Validator: 1 module
+  - Branding: 2 modules
+  - API Tester: 5 modules
 - **Dependencies**: 35 total packages (26 production + 9 dev)
+
+**Lines of Code (Approximate)**:
+- Components: ~3,500 lines
+- Utilities: ~1,800 lines
+- Types: ~500 lines
+- API Routes: ~400 lines
+- **Total**: ~6,200 lines of TypeScript
 
 ---
 

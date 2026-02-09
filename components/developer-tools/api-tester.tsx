@@ -1,373 +1,272 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { History, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Send, Plus, Trash2, Copy, Check, Loader2 } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { RequestBuilder } from "@/components/api-tester/request-builder";
+import { HeadersEditor } from "@/components/api-tester/headers-editor";
+import { BodyEditor } from "@/components/api-tester/body-editor";
+import { AuthEditor } from "@/components/api-tester/auth-editor";
+import { ResponseViewer } from "@/components/api-tester/response-viewer";
+import { CurlImporter } from "@/components/api-tester/curl-importer";
+import { HistoryPanel } from "@/components/api-tester/history-panel";
+import type {
+  APIRequest,
+  APIResponse,
+  RequestHistory,
+  CurlParseResult,
+  HTTPMethod,
+  HeaderPair,
+  RequestBody,
+  AuthConfig,
+} from "@/types/api-tester";
+import { executeRequest } from "@/lib/api-tester/request-executor";
+import { validateRequest } from "@/lib/api-tester/validation";
 
-type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-
-interface Header {
-  key: string;
-  value: string;
-}
-
-interface ApiResponse {
-  status: number;
-  statusText: string;
-  headers: Record<string, string>;
-  body: string;
-  responseTime: number;
-}
-
-const METHODS: HttpMethod[] = ["GET", "POST", "PUT", "PATCH", "DELETE"];
-
-const METHOD_COLORS: Record<HttpMethod, string> = {
-  GET: "bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20",
-  POST: "bg-blue-500/10 text-blue-600 border-blue-500/20 hover:bg-blue-500/20",
-  PUT: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20 hover:bg-yellow-500/20",
-  PATCH: "bg-orange-500/10 text-orange-600 border-orange-500/20 hover:bg-orange-500/20",
-  DELETE: "bg-red-500/10 text-red-600 border-red-500/20 hover:bg-red-500/20",
+const defaultRequest: APIRequest = {
+  id: "default",
+  method: "GET",
+  url: "",
+  headers: [],
+  body: { type: "none" },
+  auth: { type: "none" },
 };
-
-const METHOD_ACTIVE_COLORS: Record<HttpMethod, string> = {
-  GET: "bg-green-500 text-white hover:bg-green-600",
-  POST: "bg-blue-500 text-white hover:bg-blue-600",
-  PUT: "bg-yellow-500 text-white hover:bg-yellow-600",
-  PATCH: "bg-orange-500 text-white hover:bg-orange-600",
-  DELETE: "bg-red-500 text-white hover:bg-red-600",
-};
-
-const CONTENT_TYPES = [
-  { label: "JSON", value: "application/json" },
-  { label: "Form Data", value: "application/x-www-form-urlencoded" },
-  { label: "Plain Text", value: "text/plain" },
-  { label: "XML", value: "application/xml" },
-];
-
-function getStatusColor(status: number): string {
-  if (status >= 200 && status < 300) return "bg-green-500/10 text-green-600 border-green-500/20";
-  if (status >= 300 && status < 400) return "bg-yellow-500/10 text-yellow-600 border-yellow-500/20";
-  if (status >= 400 && status < 500) return "bg-red-500/10 text-red-600 border-red-500/20";
-  if (status >= 500) return "bg-red-500/10 text-red-600 border-red-500/20";
-  return "bg-muted text-muted-foreground";
-}
-
-function tryPrettyPrint(body: string): { formatted: string; isJson: boolean } {
-  try {
-    const parsed = JSON.parse(body);
-    return { formatted: JSON.stringify(parsed, null, 2), isJson: true };
-  } catch {
-    return { formatted: body, isJson: false };
-  }
-}
 
 export function APITesterTool() {
-  const [method, setMethod] = useState<HttpMethod>("GET");
-  const [url, setUrl] = useState("");
-  const [headers, setHeaders] = useState<Header[]>([{ key: "", value: "" }]);
-  const [body, setBody] = useState("");
-  const [contentType, setContentType] = useState("application/json");
-  const [response, setResponse] = useState<ApiResponse | null>(null);
+  const [request, setRequest] = useState<APIRequest>(defaultRequest);
+  const [response, setResponse] = useState<APIResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [history, setHistory] = useState<RequestHistory[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [useProxy, setUseProxy] = useState(false);
 
-  const supportsBody = ["POST", "PUT", "PATCH"].includes(method);
+  // Load history from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("api-tester-history");
+    if (saved) {
+      try {
+        setHistory(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to load history", e);
+      }
+    }
+  }, []);
 
-  const handleAddHeader = () => {
-    setHeaders([...headers, { key: "", value: "" }]);
+  // Save to history
+  const saveToHistory = (
+    req: APIRequest,
+    res: APIResponse | null,
+    success: boolean
+  ) => {
+    const entry: RequestHistory = {
+      id: Date.now().toString(),
+      request: req,
+      response: res || undefined,
+      timestamp: Date.now(),
+      success,
+    };
+
+    const updated = [entry, ...history].slice(0, 20); // Keep last 20
+    setHistory(updated);
+    localStorage.setItem("api-tester-history", JSON.stringify(updated));
   };
 
-  const handleRemoveHeader = (index: number) => {
-    setHeaders(headers.filter((_, i) => i !== index));
+  // Load from history
+  const loadFromHistory = (entry: RequestHistory) => {
+    setRequest(entry.request);
+    setResponse(entry.response || null);
+    setError(null);
+    setShowHistory(false);
   };
 
-  const handleHeaderChange = (index: number, field: "key" | "value", val: string) => {
-    const updated = [...headers];
-    updated[index] = { ...updated[index], [field]: val };
-    setHeaders(updated);
+  // Delete history entry
+  const deleteHistoryEntry = (id: string) => {
+    const updated = history.filter((e) => e.id !== id);
+    setHistory(updated);
+    localStorage.setItem("api-tester-history", JSON.stringify(updated));
   };
 
+  // Handle cURL import
+  const handleCurlImport = (result: CurlParseResult) => {
+    setRequest((prev) => ({
+      ...prev,
+      method: result.method || prev.method,
+      url: result.url || prev.url,
+      headers: result.headers || prev.headers,
+      body: result.body || prev.body,
+      auth: result.auth || prev.auth,
+    }));
+  };
+
+  // Send request
   const handleSendRequest = async () => {
-    if (!url.trim()) {
-      setError("Please enter a URL");
+    setError(null);
+    setResponse(null);
+
+    // Validate request
+    const validation = validateRequest(request);
+    if (!validation.isValid) {
+      setError(validation.errors.join(", "));
       return;
     }
 
     setIsLoading(true);
-    setError(null);
-    setResponse(null);
 
     try {
-      // Build headers object from key-value pairs
-      const headerObj: Record<string, string> = {};
-      headers.forEach((h) => {
-        if (h.key.trim()) {
-          headerObj[h.key.trim()] = h.value;
-        }
-      });
-
-      // Add content-type for methods with body
-      if (supportsBody && body.trim()) {
-        headerObj["Content-Type"] = contentType;
-      }
-
-      const payload: {
-        url: string;
-        method: string;
-        headers: Record<string, string>;
-        body?: string;
-      } = {
-        url: url.trim(),
-        method,
-        headers: headerObj,
-      };
-
-      if (supportsBody && body.trim()) {
-        payload.body = body;
-      }
-
-      const res = await fetch("/api/proxy", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || `Proxy returned status ${res.status}`);
-        return;
-      }
-
-      setResponse(data as ApiResponse);
+      const res = await executeRequest(request, useProxy);
+      setResponse(res);
+      saveToHistory(request, res, true);
     } catch (err: any) {
-      setError(err.message || "Failed to send request");
+      const errorMessage = err.message || "Request failed";
+      setError(errorMessage);
+      saveToHistory(request, null, false);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleCopyResponse = async () => {
-    if (!response) return;
-    const { formatted } = tryPrettyPrint(response.body);
-    await navigator.clipboard.writeText(formatted);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  // Reset request
+  const handleReset = () => {
+    setRequest(defaultRequest);
+    setResponse(null);
+    setError(null);
   };
 
-  const responseBody = response ? tryPrettyPrint(response.body) : null;
+  // Update handlers
+  const updateMethod = (method: HTTPMethod) => {
+    setRequest((prev) => ({ ...prev, method }));
+  };
+
+  const updateUrl = (url: string) => {
+    setRequest((prev) => ({ ...prev, url }));
+  };
+
+  const updateHeaders = (headers: HeaderPair[]) => {
+    setRequest((prev) => ({ ...prev, headers }));
+  };
+
+  const updateBody = (body: RequestBody) => {
+    setRequest((prev) => ({ ...prev, body }));
+  };
+
+  const updateAuth = (auth: AuthConfig) => {
+    setRequest((prev) => ({ ...prev, auth }));
+  };
 
   return (
-    <div className="grid gap-6">
-      {/* Request Builder */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">Request Builder</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Method Selector */}
-          <div className="space-y-2">
-            <Label>Method</Label>
-            <div className="flex flex-wrap gap-2">
-              {METHODS.map((m) => (
-                <Button
-                  key={m}
-                  variant="outline"
-                  size="sm"
-                  className={
-                    method === m
-                      ? METHOD_ACTIVE_COLORS[m]
-                      : METHOD_COLORS[m]
-                  }
-                  onClick={() => setMethod(m)}
-                >
-                  {m}
-                </Button>
-              ))}
-            </div>
-          </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-semibold">API Testing Tool</h2>
+          <p className="text-sm text-muted-foreground">
+            Test REST APIs with cURL import and request history
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowHistory(!showHistory)}
+          >
+            <History className="mr-2 h-4 w-4" />
+            History ({history.length})
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleReset}>
+            <RotateCcw className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
 
-          {/* URL Input */}
-          <div className="space-y-2">
-            <Label htmlFor="request-url">URL</Label>
-            <div className="flex gap-2">
-              <Input
-                id="request-url"
-                placeholder="https://api.example.com/endpoint"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !isLoading) handleSendRequest();
-                }}
-                className="flex-1 font-mono text-sm"
-              />
-              <Button
-                onClick={handleSendRequest}
-                disabled={isLoading}
-                className="flex-shrink-0"
-              >
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                ) : (
-                  <Send className="h-4 w-4 mr-2" />
-                )}
-                Send
-              </Button>
-            </div>
-          </div>
-
-          {/* Headers */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label>Headers</Label>
-              <Button variant="outline" size="sm" onClick={handleAddHeader}>
-                <Plus className="h-3.5 w-3.5 mr-1" />
-                Add Header
-              </Button>
-            </div>
-            <div className="space-y-2">
-              {headers.map((header, index) => (
-                <div key={index} className="flex gap-2 items-center">
-                  <Input
-                    placeholder="Header name"
-                    value={header.key}
-                    onChange={(e) => handleHeaderChange(index, "key", e.target.value)}
-                    className="flex-1 font-mono text-sm"
-                  />
-                  <Input
-                    placeholder="Header value"
-                    value={header.value}
-                    onChange={(e) => handleHeaderChange(index, "value", e.target.value)}
-                    className="flex-1 font-mono text-sm"
-                  />
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleRemoveHeader(index)}
-                    className="flex-shrink-0"
-                    disabled={headers.length === 1}
-                  >
-                    <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Body (only for POST/PUT/PATCH) */}
-          {supportsBody && (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label>Body</Label>
-                <div className="flex gap-1">
-                  {CONTENT_TYPES.map((ct) => (
-                    <Button
-                      key={ct.value}
-                      variant={contentType === ct.value ? "default" : "outline"}
-                      size="sm"
-                      className="h-7 px-2 text-xs"
-                      onClick={() => setContentType(ct.value)}
-                    >
-                      {ct.label}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-              <textarea
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-                placeholder={
-                  contentType === "application/json"
-                    ? '{\n  "key": "value"\n}'
-                    : "Enter request body..."
-                }
-                className="w-full h-[200px] font-mono text-sm bg-muted p-4 rounded-lg border-0 resize-none focus:outline-none focus:ring-2 focus:ring-ring"
-                spellCheck={false}
-              />
-            </div>
-          )}
-
-          {/* Error */}
-          {error && (
-            <div className="p-3 bg-destructive/10 text-destructive text-sm rounded-lg">
-              {error}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Response Viewer */}
-      {response && (
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-base">Response</CardTitle>
-              <div className="flex items-center gap-2">
-                <Badge className={getStatusColor(response.status)}>
-                  {response.status} {response.statusText}
-                </Badge>
-                <Badge variant="secondary">{response.responseTime}ms</Badge>
-                <Button variant="outline" size="sm" onClick={handleCopyResponse}>
-                  {copied ? (
-                    <Check className="h-3.5 w-3.5 mr-1" />
-                  ) : (
-                    <Copy className="h-3.5 w-3.5 mr-1" />
-                  )}
-                  {copied ? "Copied" : "Copy"}
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="body">
-              <TabsList className="grid w-full grid-cols-2 mb-3">
-                <TabsTrigger value="body">Body</TabsTrigger>
-                <TabsTrigger value="headers">Headers</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="body">
-                <pre className="bg-muted p-4 rounded-lg overflow-auto max-h-[400px] text-xs font-mono whitespace-pre-wrap break-all">
-                  <code>{responseBody?.formatted || "(empty response)"}</code>
-                </pre>
-                {responseBody?.isJson && (
-                  <p className="text-xs text-muted-foreground mt-2">
-                    Detected JSON - auto-formatted for readability
-                  </p>
-                )}
-              </TabsContent>
-
-              <TabsContent value="headers">
-                <div className="bg-muted rounded-lg overflow-auto max-h-[400px]">
-                  {Object.keys(response.headers).length > 0 ? (
-                    <div className="divide-y divide-border">
-                      {Object.entries(response.headers).map(([key, value]) => (
-                        <div key={key} className="flex gap-4 p-3 text-sm">
-                          <span className="font-mono font-medium text-xs min-w-[180px] flex-shrink-0">
-                            {key}
-                          </span>
-                          <span className="font-mono text-xs text-muted-foreground break-all">
-                            {value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="p-4 text-sm text-muted-foreground">
-                      No headers in response
-                    </p>
-                  )}
-                </div>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+      {/* History Panel */}
+      {showHistory && (
+        <HistoryPanel
+          history={history}
+          onLoad={loadFromHistory}
+          onDelete={deleteHistoryEntry}
+          onClose={() => setShowHistory(false)}
+        />
       )}
+
+      {/* cURL Import */}
+      <CurlImporter onImport={handleCurlImport} />
+
+      {/* Main Content */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* LEFT COLUMN: Request Builder */}
+        <div className="space-y-4">
+          <RequestBuilder
+            method={request.method}
+            url={request.url}
+            onMethodChange={updateMethod}
+            onUrlChange={updateUrl}
+            onSend={handleSendRequest}
+            isLoading={isLoading}
+          />
+
+          <Tabs defaultValue="headers" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="headers">
+                Headers
+                {request.headers.filter((h) => h.enabled).length > 0 && (
+                  <span className="ml-1 text-xs">
+                    ({request.headers.filter((h) => h.enabled).length})
+                  </span>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="body">
+                Body
+                {request.body.type !== "none" && (
+                  <span className="ml-1 text-xs">•</span>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="auth">
+                Auth
+                {request.auth.type !== "none" && (
+                  <span className="ml-1 text-xs">•</span>
+                )}
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="headers">
+              <HeadersEditor headers={request.headers} onChange={updateHeaders} />
+            </TabsContent>
+
+            <TabsContent value="body">
+              <BodyEditor body={request.body} onChange={updateBody} />
+            </TabsContent>
+
+            <TabsContent value="auth">
+              <AuthEditor auth={request.auth} onChange={updateAuth} />
+            </TabsContent>
+          </Tabs>
+
+          {/* Proxy Toggle */}
+          <div className="flex items-center gap-2 p-4 bg-muted rounded-lg">
+            <input
+              type="checkbox"
+              id="use-proxy"
+              checked={useProxy}
+              onChange={(e) => setUseProxy(e.target.checked)}
+              className="h-4 w-4 rounded border-gray-300"
+            />
+            <Label htmlFor="use-proxy" className="text-sm cursor-pointer">
+              Use server proxy (enable if you encounter CORS issues)
+            </Label>
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN: Response Viewer */}
+        <ResponseViewer
+          response={response}
+          isLoading={isLoading}
+          error={error}
+          request={request}
+        />
+      </div>
     </div>
   );
 }

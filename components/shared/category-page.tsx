@@ -69,7 +69,7 @@ export function CategoryPage({ category }: CategoryPageProps) {
               <p className="text-sm text-muted-foreground">{tool.description}</p>
               <Button asChild className="w-full group/btn">
                 <Link href={tool.href}>
-                  Try it Now
+                  Try {tool.name}
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
                 </Link>
               </Button>

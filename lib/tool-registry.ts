@@ -15,6 +15,7 @@ import {
   Palette,
   ImageIcon,
   Paintbrush,
+  Wand2,
   type LucideIcon,
 } from "lucide-react";
 
@@ -180,6 +181,17 @@ export const toolCategories: ToolCategory[] = [
         shortDescription: "Test regex patterns",
         href: "/tools/developer/regex-tester",
         icon: Search,
+        category: "developer",
+        gradient: "from-orange-500 to-red-500",
+        isNew: true,
+      },
+      {
+        id: "regex-maker",
+        name: "Regex Maker",
+        description: "Generate regex patterns for email, phone, URL, password validation and more with multi-language syntax support",
+        shortDescription: "Generate regex patterns",
+        href: "/tools/developer/regex-maker",
+        icon: Wand2,
         category: "developer",
         gradient: "from-orange-500 to-red-500",
         isNew: true,

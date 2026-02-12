@@ -9,7 +9,7 @@ import {
 export const metadata: Metadata = generateSEOMetadata({
   title: "Contact Us - Get in Touch with Ziriverse",
   description:
-    "Contact Ziriverse for support, feedback, or collaboration. Professional branding tools for modern creators. Email: hello@ziriverse.com. Connect via GitHub, Twitter, or LinkedIn.",
+    "Contact Ziriverse for support, feedback, or collaboration. Professional branding tools for modern creators. Email: ziriverse@gmail.com. Connect via Instagram, X (Twitter), or GitHub.",
   keywords: [
     "contact",
     "support",
@@ -31,18 +31,18 @@ function generateContactPointSchema() {
     mainEntity: {
       "@type": "Organization",
       name: "Ziriverse",
-      email: "hello@ziriverse.com",
+      email: "ziriverse@gmail.com",
       url: "https://ziriverse.com",
       logo: "https://ziriverse.com/favicon.svg",
       sameAs: [
-        "https://twitter.com/ziriverse",
-        "https://github.com/ziriverse",
-        "https://linkedin.com/company/ziriverse",
+        "https://x.com/ziriverse",
+        "https://www.instagram.com/ziriverse",
+        "https://github.com/umdasali",
       ],
       contactPoint: [
         {
           "@type": "ContactPoint",
-          email: "hello@ziriverse.com",
+          email: "ziriverse@gmail.com",
           contactType: "customer support",
           areaServed: "Worldwide",
           availableLanguage: ["English"],

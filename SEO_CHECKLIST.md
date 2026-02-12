@@ -226,8 +226,9 @@ curl http://localhost:3000 | grep "application/ld+json"
 
 ### Current Domain Configuration
 - **Primary Domain**: ziriverse.com
-- **Twitter Handle**: @ziriverse
-- **Email**: hello@ziriverse.com
+- **X (Twitter) Handle**: @ziriverse
+- **Instagram**: @ziriverse
+- **Email**: ziriverse@gmail.com
 
 ### Branding
 - **Name**: Ziriverse

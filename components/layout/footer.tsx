@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Sparkles, Github, Twitter, Linkedin, Mail } from "lucide-react";
+import { Sparkles, Github, Twitter, Mail, Camera } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 
 export function Footer() {
@@ -26,9 +26,18 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-muted hover:bg-primary/10 hover:text-primary transition-colors"
-                aria-label="Twitter"
+                aria-label="X (Twitter)"
               >
                 <Twitter className="h-4 w-4" />
+              </a>
+              <a
+                href={siteConfig.social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-muted hover:bg-primary/10 hover:text-primary transition-colors"
+                aria-label="Instagram"
+              >
+                <Camera className="h-4 w-4" />
               </a>
               <a
                 href={siteConfig.social.github}
@@ -38,15 +47,6 @@ export function Footer() {
                 aria-label="GitHub"
               >
                 <Github className="h-4 w-4" />
-              </a>
-              <a
-                href={siteConfig.social.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-lg bg-muted hover:bg-primary/10 hover:text-primary transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="h-4 w-4" />
               </a>
               <a
                 href={`mailto:${siteConfig.email}`}

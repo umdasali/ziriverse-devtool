@@ -36,13 +36,13 @@ export const siteConfig = {
   twitterCreator: "@ziriverse",
 
   // Contact
-  email: "hello@ziriverse.com",
+  email: "ziriverse@gmail.com",
 
   // Social Links
   social: {
-    twitter: "https://twitter.com/ziriverse",
-    github: "https://github.com/ziriverse",
-    linkedin: "https://linkedin.com/company/ziriverse",
+    twitter: "https://x.com/ziriverse",
+    instagram: "https://www.instagram.com/ziriverse",
+    github: "https://github.com/umdasali",
   },
 
   // Footer Links

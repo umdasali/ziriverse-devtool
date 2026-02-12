@@ -7,11 +7,11 @@ import {
   MapPin,
   Mail,
   Github,
-  Linkedin,
+  Twitter,
+  Camera,
   ExternalLink,
   MessageSquare,
   Code2,
-  Briefcase,
   Heart,
 } from "lucide-react";
 
@@ -33,27 +33,35 @@ export default function ContactPage() {
 
   const socialLinks = [
     {
+      name: "X (Twitter)",
+      icon: Twitter,
+      url: "https://x.com/ziriverse",
+      username: "@ziriverse",
+      description: "Follow us for updates and announcements",
+      color: "from-slate-700 to-slate-900",
+    },
+    {
+      name: "Instagram",
+      icon: Camera,
+      url: "https://www.instagram.com/ziriverse",
+      username: "@ziriverse",
+      description: "Visual updates and tool showcases",
+      color: "from-pink-500 to-purple-600",
+    },
+    {
       name: "GitHub",
       icon: Github,
       url: "https://github.com/umdasali",
       username: "@umdasali",
-      description: "Check out my open source projects and contributions",
+      description: "Check out our open source projects",
       color: "from-gray-700 to-gray-900",
-    },
-    {
-      name: "LinkedIn",
-      icon: Linkedin,
-      url: "https://www.linkedin.com/in/md-ali-sher-ali-265153284/",
-      username: "Md Ali Sher Ali",
-      description: "Connect with me professionally",
-      color: "from-blue-600 to-blue-800",
     },
     {
       name: "Email",
       icon: Mail,
-      url: "mailto:umdasali@gmail.com",
-      username: "umdasali@gmail.com",
-      description: "Send me a message directly",
+      url: "mailto:ziriverse@gmail.com",
+      username: "ziriverse@gmail.com",
+      description: "Send us a message directly",
       color: "from-red-500 to-red-700",
     },
   ];
@@ -79,7 +87,7 @@ export default function ContactPage() {
             </h1>
 
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Have questions, feedback, or want to collaborate? I'd love to hear from
+              Have questions, feedback, or want to collaborate? We'd love to hear from
               you. Feel free to reach out through any of the channels below.
             </p>
           </div>
@@ -98,7 +106,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {socialLinks.map((link, index) => (
               <a
                 key={index}
@@ -170,10 +178,10 @@ export default function ContactPage() {
           <Card className="border-2 bg-gradient-to-br from-primary/5 to-purple-500/5">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl mb-2">
-                Explore My Work
+                Explore Our Work
               </CardTitle>
               <CardDescription className="text-base">
-                Check out my projects and contributions
+                Check out our projects and contributions
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -190,13 +198,13 @@ export default function ContactPage() {
                   </Button>
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/md-ali-sher-ali-265153284/"
+                  href="https://www.instagram.com/ziriverse"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <Button size="lg" variant="outline" className="group">
-                    <Briefcase className="w-5 h-5 mr-2" />
-                    Connect on LinkedIn
+                    <Camera className="w-5 h-5 mr-2" />
+                    Follow on Instagram
                     <ExternalLink className="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                 </a>
@@ -217,13 +225,13 @@ export default function ContactPage() {
               Built with Passion
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Branding Tools is crafted by a dedicated developer passionate about
+              Ziriverse is crafted by a dedicated team passionate about
               creating useful, privacy-first web tools. All tools are free and will
               always remain free. Your support and feedback help make this project
               better every day.
             </p>
             <div className="pt-4">
-              <a href="mailto:umdasali@gmail.com">
+              <a href="mailto:ziriverse@gmail.com">
                 <Button size="lg">
                   <Mail className="w-5 h-5 mr-2" />
                   Send Feedback
@@ -247,10 +255,10 @@ export default function ContactPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="mailto:umdasali@gmail.com">
+              <a href="mailto:ziriverse@gmail.com">
                 <Button size="lg" variant="secondary" className="w-full sm:w-auto">
                   <Mail className="w-5 h-5 mr-2" />
-                  Email Me
+                  Email Us
                 </Button>
               </a>
               <a

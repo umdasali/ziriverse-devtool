@@ -360,13 +360,13 @@ The website has been completely transformed into a fully mobile-responsive, SEO-
 - ✅ Meta tags include domain
 - ✅ Sitemap configured
 - ✅ Social links configured
-- ✅ Email configured (hello@ziriverse.com)
+- ✅ Email configured (ziriverse@gmail.com)
 
 ### Social Media
-- Twitter: @ziriverse
-- GitHub: github.com/ziriverse
-- LinkedIn: linkedin.com/company/ziriverse
-- Email: hello@ziriverse.com
+- X (Twitter): @ziriverse (https://x.com/ziriverse)
+- Instagram: @ziriverse (https://www.instagram.com/ziriverse)
+- GitHub: github.com/umdasali
+- Email: ziriverse@gmail.com
 
 ---
 
